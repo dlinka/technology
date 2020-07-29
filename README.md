@@ -1,2 +1,2 @@
-# tech
+# technology
 🐳Docker
