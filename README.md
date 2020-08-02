@@ -1,4 +1,4 @@
-# technology
+# Technology
 
 <img src="https://emojis.slackmojis.com/emojis/images/1533733488/4439/mysql.png?1533733488" width="20" height="20"/>MySQL
 
