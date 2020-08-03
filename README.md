@@ -3,6 +3,7 @@
 <img src="https://emojis.slackmojis.com/emojis/images/1533733488/4439/mysql.png?1533733488" width="20" height="20"/>MySQL
 
 * [SQL优化主题](https://github.com/dlinka/technology/issues/7)
+* [使用MySQL-explain查看SQL执行过程](https://github.com/dlinka/technology/issues/8)
 
 <img src="https://emojis.slackmojis.com/emojis/images/1473972964/1163/redis.gif?1473972964" width="20" height="20"/>Redis
 
