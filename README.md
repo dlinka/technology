@@ -10,6 +10,10 @@
 
 * [持久化机制](https://github.com/dlinka/technology/issues/6)
 
+<img src="https://emojis.slackmojis.com/emojis/images/1489318089/1851/intellij_idea.png?1489318089" width="20" height="20"/>IDEA
+
+* [程序员必装的插件](https://github.com/dlinka/technology/issues/11)
+
 <img src="https://emojis.slackmojis.com/emojis/images/1462400762/397/docker.png?1462400762" width="20" height="20"/>Docker
 
 
