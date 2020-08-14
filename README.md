@@ -1,6 +1,8 @@
-# Technology
+# CR技术栈
+# 所有的文章都是手打,绝不COPY
+# 做一个有技术的CRUD BOY😀😀😀
 
-😀😀😀DB
+😃😃😃DB
 
 * [SQL优化主题](https://github.com/dlinka/technology/issues/7)
 * [使用MySQL-explain查看SQL执行过程](https://github.com/dlinka/technology/issues/8)
