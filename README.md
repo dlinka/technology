@@ -16,6 +16,9 @@
 
 <img src="https://emojis.slackmojis.com/emojis/images/1462400762/397/docker.png?1462400762" width="20" height="20"/>Docker
 
+<img src="https://emojis.slackmojis.com/emojis/images/1537443399/4705/postman.png?1537443399" width="20" height="20"/>Postman
+
+* [Postman常用功能](https://github.com/dlinka/technology/issues/12)
 
 
 
