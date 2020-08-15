@@ -17,7 +17,8 @@
 
 😂😂😂DevTool
 
-* [程序员必装的插件](https://github.com/dlinka/technology/issues/11)
+* [程序员必装的IDEA插件](https://github.com/dlinka/technology/issues/11)
+* [IDEA的快捷键](https://github.com/dlinka/technology/issues/14)
 * [Postman常用功能](https://github.com/dlinka/technology/issues/12)
 
 😄😄😄Protocol
