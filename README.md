@@ -24,11 +24,12 @@
 😄Protocol
 
 * [WebSocket](https://github.com/dlinka/technology/issues/13)
-* [对理解TCP三次握手四次挥手最好的一篇文章,没有之一](https://blog.csdn.net/a19881029/article/details/38091243)
+* [对理解TCP三次握手四次挥手最好的一篇文章,没有之一(转)](https://blog.csdn.net/a19881029/article/details/38091243)
 
 😅Security
 
 * [查看自己的账号是否被泄露](https://haveibeenpwned.com/)
+* [什么是数字签名(转)](http://www.youdzone.com/signature.html)
 
 ---
 
