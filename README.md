@@ -1,15 +1,17 @@
 # 让我们恭喜大帅B🌹,发现宝藏👍
 所有原创文章都是手打,绝不COPY,鄙视COPY的,更鄙视COPY自己都不懂的  
-大道至简,技术我觉得也一样    
-如果遇到晦涩难懂并且长篇大论排版也不行的  
-基本可以断定这个人表达能力不行,并且缺少同理心  
-因为但凡有同理心的,都是希望别人看你的文章能够通熟易懂,醍醐灌顶  
+大道至简,技术我觉得也一样  
+
+
+因为但凡有同理心的,都是希望别人看你的文章能够通熟易懂,醍醐灌顶 
+
+---
 
 😃DB
 
-* [SQL优化主题](https://github.com/dlinka/technology/issues/7)
-* [使用MySQL-explain查看SQL执行过程](https://github.com/dlinka/technology/issues/8)
-* [MySQL字段类型的选择](https://github.com/dlinka/technology/issues/9)
+* [SQL优化实战](https://github.com/dlinka/technology/blob/master/DB/SQL%E8%B0%83%E4%BC%98%E5%AE%9E%E6%88%98.md)
+* [MySQL-explain实战](https://github.com/dlinka/technology/blob/master/DB/MySQL-explain%E5%AE%9E%E6%88%98.md)
+* [MySQL字段类型的选择](https://github.com/dlinka/technology/blob/master/DB/MySQL%E5%AD%97%E6%AE%B5%E7%B1%BB%E5%9E%8B%E7%9A%84%E9%80%89%E6%8B%A9.md)
 
 😁NoSQL
 
