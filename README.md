@@ -17,15 +17,15 @@
 
 * [Redis的持久化机制](https://github.com/dlinka/technology/issues/6)
 
-😂DevTool
+😂DevTools
 
 * [程序员必装的IDEA插件](https://github.com/dlinka/technology/blob/master/DevTools/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E8%A3%85%E7%9A%84IDEA%E6%8F%92%E4%BB%B6.md)
 * [IDEA快捷键设置](https://github.com/dlinka/technology/blob/master/DevTools/IDEA%E5%BF%AB%E6%8D%B7%E9%94%AE%E8%AE%BE%E7%BD%AE.md)
 * [Postman](https://github.com/dlinka/technology/blob/master/DevTools/Postman.md)
 
-😄Protocol
+😄Protocols
 
-* [WebSocket](https://github.com/dlinka/technology/issues/13)
+* [websocket](https://github.com/dlinka/technology/blob/master/Protocols/websocket.md)
 * [对理解TCP三次握手四次挥手最好的一篇文章,没有之一(转)](https://blog.csdn.net/a19881029/article/details/38091243)
 
 😅Security
