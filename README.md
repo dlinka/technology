@@ -13,9 +13,9 @@
 * [MySQL-explain实战](https://github.com/dlinka/technology/blob/master/DB/MySQL-explain%E5%AE%9E%E6%88%98.md)
 * [MySQL字段类型的选择](https://github.com/dlinka/technology/blob/master/DB/MySQL%E5%AD%97%E6%AE%B5%E7%B1%BB%E5%9E%8B%E7%9A%84%E9%80%89%E6%8B%A9.md)
 
-😁NoSQL
+😁Redis
 
-* [Redis的持久化机制](https://github.com/dlinka/technology/issues/6)
+* [持久化机制](https://github.com/dlinka/technology/blob/master/Redis/%E6%8C%81%E4%B9%85%E5%8C%96%E6%9C%BA%E5%88%B6.md)
 
 😂DevTools
 
