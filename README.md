@@ -33,7 +33,7 @@
 * [查看自己的账号是否被泄露](https://haveibeenpwned.com/)
 * [什么是数字签名,这篇文章我感觉程序员应该都读过(转)](http://www.youdzone.com/signature.html)
 
-😆Thread
+😆多线程
 
 * [多线程面试题](https://github.com/dlinka/technology/blob/master/Thread/%E5%A4%9A%E7%BA%BF%E7%A8%8B%E9%9D%A2%E8%AF%95%E9%A2%98.md)
 
@@ -41,6 +41,9 @@
 
 * [ArrayList和LinkedList的比较](https://github.com/dlinka/technology/blob/master/JCF/ArrayList%E5%92%8CLinkedList%E7%9A%84%E6%AF%94%E8%BE%83.md)
 
+😎数据结构
+
+* [Data Structure Visualization](https://www.cs.usfca.edu/~galles/visualization/Algorithms.html)
 ---
 
 最后㊗️程序员都要做一个有技术的CRUD BOY😀😀😀
