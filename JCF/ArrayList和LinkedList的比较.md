@@ -1,14 +1,15 @@
-循环调用add()方法的比较
+调用add()方法的比较
 
-| | 调用千万次 |
+| | 循环调用1千万次 |
 | ---- | ---- |
 | ArrayList | 39355 |
 | LinkedList | 41928 |
 
-    没有做实验之前,我一直认为ArrayList的扩容复制开销会大一点,但是结果显示两者其实差不多,甚至ArrayList比LinkedList执行时间更少
-    为什么会出现这种现象呢?LinkedList的add()方法会大量的new对象,开销也不低
+    没有做实验之前,我一直认为ArrayList的扩容复制开销会大一点
+    但是结果显示两者其实差不多,甚至ArrayList比LinkedList执行时间更少
+    为什么会出现这种现象呢?LinkedList的add()方法会大量的new对象,其实这个开销也不低
     
-    使用ArrayList的时候如果对容量有预估,最好还是指定一个值
+    使用ArrayList的时候如果对容量有预估,最好指定一个capacity,减少扩容复制
     比如在我Mac上同样执行千万次add()方法,指定capacity比不指定capacity性能提高25%
 
 ---
@@ -27,8 +28,8 @@
         }
     使用fori遍历ArrayList最好
 
-    为什么会有超时的现象呢?
-    进入LinkedList的源码会发现有大量的for循环
+    为什么上面结果会有超时的现象呢?
+    进入LinkedList的源码,会发现node()方法中有导致执行大量的for循环
         return node(index).item;
         ↓
         if (index < (size >> 1)) {
@@ -53,9 +54,9 @@ remove()方法的比较
 | LinkedList | 超时 |
 
     ArrayList每一次删除都会执行System.arraycopy()方法
-    我想对这个方法可以再次性能判断,维度是基于移动长度,得出的结果就可以判断位置对删除ArrayList集合元素的影响
+    我想对这个方法可以再次测试,维度是基于移动长度,得出的结果就可以判断删除元素的位置对remove()方法的影响
     
     为什么LinkedList会超时呢?
-    查看源码remove()方法跟add()方法同样的逻辑,有大量的for循环
+    查看源码发现remove()方法跟add()方法同样的逻辑,会执行大量的for循环
     
 ---    
