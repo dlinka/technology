@@ -47,7 +47,7 @@
 
 😗操作系统
 
-* [如何查看CPU的个数](https://github.com/dlinka/technology/blob/master/OS/CPU.md)
+* [如何查看CPU个数](https://github.com/dlinka/technology/blob/master/OS/%E5%A6%82%E4%BD%95%E6%9F%A5%E7%9C%8BCPU%E4%B8%AA%E6%95%B0.md)
 
 ---
 
