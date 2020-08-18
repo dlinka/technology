@@ -44,6 +44,11 @@
 😎数据结构
 
 * [Data Structure Visualization](https://www.cs.usfca.edu/~galles/visualization/Algorithms.html)
+
+😗操作系统
+
+* [如何查看CPU的个数](https://github.com/dlinka/technology/blob/master/OS/CPU.md)
+
 ---
 
 最后㊗️程序员都要做一个有技术的CRUD BOY😀😀😀
