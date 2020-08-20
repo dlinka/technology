@@ -1,16 +1,19 @@
 线程状态
 
-NEW
+NEW:A thread that has not yet started is in this state.
 
-    new Thread()就是这个状态
+    //就是这个状态
+    Thread thread = new Thread();
 
-RUNNABLE
+RUNNABLE:A thread executing in the Java virtual machine is in this state.
     
-    官方API解释这个状态代表线程正在Java虚拟机中运行,但是线程可能正在等待CPU
-    后面这句话什么意思呢?我的理解是OS中的可运行状态在Java里面也算是RUNNABLE状态了
-
-    通过上面的定义引申出来,线程执行I/O,他的状态应该也是RUNNABLE,因为线程一直在JVM中运行
-    这点可以知道Java的线程状态和OS的线程状态是完全的两码事
+    //处于可运行状态的线程正在Java虚拟机中执行,但它可能正在等待来自操作系统(例如处理器)的其他资源
+    A thread in the runnable state is executing in the Java virtual machine but it may be waiting for other resources from the operating system such as processor.
+    通过这个定义知道Java里面的RUNNABLE状态应该是操作系统里面的RUNNING状态
+    而且操作系统中的可运行状态(RUNNABLE)在Java里面也算是RUNNABLE状态
+    
+    其实在JVM里,线程执行I/O,他的状态也是RUNNABLE,因为这个线程一直在JVM中运行
+    通过这点可以知道Java的线程状态和OS的线程状态是完全的两码事
 
 BLOCKED
 
