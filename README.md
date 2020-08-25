@@ -13,6 +13,10 @@
 * [MySQL-explain实战](https://github.com/dlinka/technology/blob/master/DB/MySQL-explain%E5%AE%9E%E6%88%98.md)
 * [MySQL字段类型的选择](https://github.com/dlinka/technology/blob/master/DB/MySQL%E5%AD%97%E6%AE%B5%E7%B1%BB%E5%9E%8B%E7%9A%84%E9%80%89%E6%8B%A9.md)
 
+😐MyBatis
+
+* [源码解析一-构建SqlSessionFactory](https://github.com/dlinka/technology/blob/master/MyBatis/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B8%80-%E6%9E%84%E5%BB%BASqlSessionFactory.md)
+
 😁Redis
 
 * [持久化机制](https://github.com/dlinka/technology/blob/master/Redis/%E6%8C%81%E4%B9%85%E5%8C%96%E6%9C%BA%E5%88%B6.md)
