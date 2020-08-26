@@ -1,10 +1,4 @@
-# 让我们恭喜大帅B😎,发现宝藏🐒
-所有原创文章都是手打,绝不COPY,鄙视COPY的,更鄙视COPY自己都不懂的  
-大道至简,技术我觉得也一样  
-
-
-因为但凡有同理心的,都是希望别人看你的文章能够通熟易懂,醍醐灌顶 
-
+# 发现宝藏🐒🐒🐒
 ---
 
 😃DB
@@ -15,7 +9,9 @@
 
 😐MyBatis
 
-* [源码解析一-构建SqlSessionFactory](https://github.com/dlinka/technology/blob/master/MyBatis/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B8%80-%E6%9E%84%E5%BB%BASqlSessionFactory.md)
+* [MyBatis源码解析一-构建SqlSessionFactory](https://github.com/dlinka/technology/blob/master/MyBatis/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B8%80-%E6%9E%84%E5%BB%BASqlSessionFactory.md)
+* [MyBatis源码解析二-构建SqlSession](https://github.com/dlinka/technology/blob/master/MyBatis/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%BA%8C-%E6%9E%84%E5%BB%BASqlSession.md)
+* [MyBatis源码解析三-构建UserMapper](https://github.com/dlinka/technology/blob/master/MyBatis/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B8%89-%E6%9E%84%E5%BB%BAUserMapper.md)
 
 😁Redis
 
@@ -56,4 +52,4 @@
 
 ---
 
-最后㊗️程序员都要做一个有技术的CRUD BOY😀😀😀
+㊗️程序员都要做一个有技术的CRUD BOY😀😀😀
