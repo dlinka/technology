@@ -35,11 +35,13 @@
     ↓
     ↓
     //进入SqlSessionTemplate的getMapper()方法
+    //这个跟之前一样,通过Configuration获取接口代理实现类
     return getConfiguration().getMapper(type, this);
 
 ---
 
-API文档   
+有关SqlSessionTemplate的一段描述
+
 ![image](https://user-images.githubusercontent.com/4274041/81561452-c7507280-93c5-11ea-8aa5-4f8e7c9b26bf.png)
 
 ---
