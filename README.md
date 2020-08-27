@@ -1,5 +1,9 @@
 # 开始宝藏之旅🐒🐒🐒
 
+😍Java
+
+* [Java新特性(持续更新)](https://github.com/dlinka/technology/blob/master/Java/%E6%96%B0%E7%89%B9%E6%80%A7.md)
+
 😃DB
 
 * [SQL优化实战](https://github.com/dlinka/technology/blob/master/DB/SQL%E8%B0%83%E4%BC%98%E5%AE%9E%E6%88%98.md)
