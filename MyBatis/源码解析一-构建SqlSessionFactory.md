@@ -10,21 +10,23 @@
     ↓
     ↓
     XMLConfigBuilder parser = new XMLConfigBuilder(inputStream, environment, properties);
-    //build方法会生成一个DefaultSqlSessionFactory对象做为返回值
     return build(parser.parse());
+    ↓
+    ↓
+    return new DefaultSqlSessionFactory(config);
 
-2.进入上面XMLConfigBuilder的parse方法,这一步就是根据配置文件生成Configuration对象
+2.进入上面XMLConfigBuilder的parse方法
 
-    //解析配置文件的configuration标签
+    //解析配置文件中的configuration标签
     parseConfiguration(parser.evalNode("/configuration"));
     ↓
     ↓
-    //解析配置文件的mappers标签
+    //解析配置文件中的mappers标签
     mapperElement(root.evalNode("mappers"));
     ↓
     ↓
     //<mapper resource="org/mybatis/builder/AuthorMapper.xml"/>
-    //假设配置文件按照上面配置,会进入如下代码片段
+    //假设配置文件按照上面配置,则会执行如下代码片段
     if(resource != null && url == null && mapperClass == null) {
         InputStream inputStream = Resources.getResourceAsStream(resource);
         XMLMapperBuilder mapperParser = new XMLMapperBuilder(inputStream, configuration, resource, configuration.getSqlFragments());
@@ -32,11 +34,9 @@
     }
     ↓
     ↓
-    if (!configuration.isResourceLoaded(resource)) {
-        configurationElement(parser.evalNode("/mapper")); //3
-        ...
-        bindMapperForNamespace(); //4
-    }
+    configurationElement(parser.evalNode("/mapper")); //3
+    ...
+    bindMapperForNamespace(); //4
 
 3.进入XMLMapperBuilder的configurationElement方法
 
