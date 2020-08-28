@@ -6,13 +6,13 @@
 
 ---
 
-chown user file
-chown user:group file
-chgrp group file
-chmod 777 file
-chmod u=rwx,g=rx,o=r file
-chmod u=rwx,go=rx file
-//设置拥有者r权限,同组人删除r权限
-chmod u+r,g-r file
-//设置所有人w权限
-chmod a+w file
+    chown user file
+    chown user:group file
+    chgrp group file
+    chmod 777 file
+    chmod u=rwx,g=rx,o=r file
+    chmod u=rwx,go=rx file
+    //设置拥有者r权限,同组人删除r权限
+    chmod u+r,g-r file
+    //设置所有人w权限
+    chmod a+w file
