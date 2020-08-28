@@ -85,7 +85,7 @@
     statement = instantiateStatement(connection);
     ↓
     ↓
-    //进入子类PreparedStatementHandler的instantiateStatement方法
+    //进入PreparedStatementHandler的instantiateStatement方法
     return connection.prepareStatement(sql);
 
 ---
