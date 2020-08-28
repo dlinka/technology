@@ -1,14 +1,12 @@
-1.userMapper是一个代理对象,所以进入MapperProxy的invoke方法
+1.userMapper是一个代理对象,执行方法会进入MapperProxy的invoke方法
 
-    //此处跟之前唯一的不同就是sqlSession的实现类
-    //这里sqlSession的实现类是SqlSessionTemplate
+    //此处跟之前唯一的不同就是sqlSession的实现类,这里是SqlSessionTemplate
     return mapperMethod.execute(sqlSession, args);
     ↓
     ↓
     result = sqlSession.selectOne(command.getName(), param);
     ↓
     ↓
-    //这里进入SqlSessionTemplate的selectOne()方法
     //sqlSessionProxy是一个代理对象
     //执行sqlSessionProxy任何方法都会进入SqlSessionInterceptor的invoke方法
     return this.sqlSessionProxy.<T> selectOne(statement, parameter);
@@ -24,6 +22,7 @@
     ↓
     //这行代码很熟悉吧!!!
     //就是源码解析二中通过sessionFactory获取SqlSession的逻辑
+    //之后的执行可以参考之前的源码解析系列
     session = sessionFactory.openSession(executorType);
 
 ---
