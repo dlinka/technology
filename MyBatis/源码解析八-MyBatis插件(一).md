@@ -9,36 +9,33 @@
 
 1.进入XMLConfigBuilder的parseConfiguration方法
 
+    //解析plugins标签
     pluginElement(root.evalNode("plugins"));
     ↓
     ↓
+    //循环每一个plugin标签
     for (XNode child : parent.getChildren()) {
-        //拿到org.mybatis.example.ExamplePlugin字符串
+        //按照示例拿到"org.mybatis.example.ExamplePlugin"
         String interceptor = child.getStringAttribute("interceptor");
         Properties properties = child.getChildrenAsProperties();
         Interceptor interceptorInstance = (Interceptor) resolveClass(interceptor).newInstance();
         interceptorInstance.setProperties(properties);
-        //将拦截器对象添加到configuration的interceptorChain属性中
+        //底层就是将拦截器对象添加到一个ArrayList集合中
         configuration.addInterceptor(interceptorInstance);
     }
 
-2.插件使用的场景
+2.插件场景
 
-    Configuration的newExecutor方法
+    //初始化Executor
     executor = (Executor) interceptorChain.pluginAll(executor);
-    
-    SimpleExecutor的doQuery方法
-    StatementHandler handler = configuration.newStatementHandler(wrapper, ms, parameter, rowBounds, resultHandler, boundSql);
-    ↓
-    ↓
+
+    //初始化StatementHandler
     statementHandler = (StatementHandler) interceptorChain.pluginAll(statementHandler);
+
+    //初始化ParameterHandler
+    parameterHandler = (ParameterHandler) interceptorChain.pluginAll(parameterHandler);
     
-    PreparedStatementHandler的父类构造函数BaseStatementHandler
-    this.parameterHandler = configuration.newParameterHandler(mappedStatement, parameterObject, boundSql);
-    this.resultSetHandler = configuration.newResultSetHandler(executor, mappedStatement, rowBounds, parameterHandler, resultHandler, boundSql);
-    ↓
-    ↓
-    parameterHandler = (ParameterHandler) interceptorChain.pluginAll(parameterHandler); 
+    //初始化ResultSetHandler
     resultSetHandler = (ResultSetHandler) interceptorChain.pluginAll(resultSetHandler);
     
 3.进入InterceptorChain的pluginAll()方法
