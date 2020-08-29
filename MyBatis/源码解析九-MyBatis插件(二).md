@@ -1,6 +1,11 @@
 官网示例
 
-    @Intercepts({@Signature(type= Executor.class, method = "update", args = {MappedStatement.class,Object.class})})
+    @Intercepts({
+            @Signature(
+                type= Executor.class,
+                method = "update",
+                args = {MappedStatement.class, Object.class})
+    })
     public class ExamplePlugin implements Interceptor {
         @Override
         public Object intercept(Invocation invocation) throws Throwable {
@@ -30,11 +35,11 @@
         Set<Method> methods = signatureMap.get(sig.type());
         if (methods == null) {
             methods = new HashSet<Method>();
-            //Class对象为key,也就是Executor.class
+            //key为Executor.class
             signatureMap.put(sig.type(), methods);
         }
-        //Set集合中有Executor的update方法
         Method method = sig.type().getMethod(sig.method(), sig.args());
+        //Set集合中有Executor的update方法
         methods.add(method);
     }
     return signatureMap;
