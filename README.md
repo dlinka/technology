@@ -20,6 +20,7 @@
 * [MyBatis源码解析五-Spring之SqlSessionFactoryBean](https://github.com/dlinka/technology/blob/master/MyBatis/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%BA%94-Spring%E4%B9%8BSqlSessionFactoryBean.md)
 * [MyBatis源码解析六-Spring之MapperFactoryBean](https://github.com/dlinka/technology/blob/master/MyBatis/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E5%85%AD-Spring%E4%B9%8BMapperFactoryBean.md)
 * [MyBatis源码解析七-Spring之userMapper.selectUserByUid(1)的执行过程](https://github.com/dlinka/technology/blob/master/MyBatis/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B8%83-Spring%E4%B9%8BuserMapper.selectUserByUid(1)%E7%9A%84%E6%89%A7%E8%A1%8C%E8%BF%87%E7%A8%8B.md)
+* [MyBatis源码解析八-MyBatis插件](https://github.com/dlinka/technology/blob/master/MyBatis/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E5%85%AB-MyBatis%E6%8F%92%E4%BB%B6.md)
 
 😁Redis
 
