@@ -59,3 +59,31 @@ or不会使用索引
     select * from fitness_session where session_id between 180072 and 180081;
 
 ---
+
+利用位计算
+
+    UPDATE table SET column=column|4
+    27|4
+    ↓
+    0001 1011|0000 0100
+    ↓
+    0001 1111
+    ↓
+    31
+
+    UPDATE table SET column=column|8 WHERE column&1=1
+    3847|8
+    ↓
+    1111 0000 0111|0000 0000 1000
+    ↓
+    1111 0000 1111
+    ↓
+    3855
+
+    3847&1
+    ↓
+    1111 0000 0111&0000 0000 0001
+    ↓
+    0000 0000 0001
+    ↓
+    1
