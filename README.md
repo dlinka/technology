@@ -1,5 +1,5 @@
 # 开始宝藏之旅🐒🐒🐒
-人狠话不多,旨在用最精简的话语描述技术的核心思想  
+不废话,不啰嗦  
 
 😍Java
 
@@ -10,6 +10,7 @@
 * [SQL优化实战](https://github.com/dlinka/technology/blob/master/DB/SQL%E8%B0%83%E4%BC%98%E5%AE%9E%E6%88%98.md)
 * [MySQL-explain实战](https://github.com/dlinka/technology/blob/master/DB/MySQL-explain%E5%AE%9E%E6%88%98.md)
 * [MySQL字段类型的选择](https://github.com/dlinka/technology/blob/master/DB/MySQL%E5%AD%97%E6%AE%B5%E7%B1%BB%E5%9E%8B%E7%9A%84%E9%80%89%E6%8B%A9.md)
+* [SQL手册](https://github.com/dlinka/technology/blob/master/DB/SQL%E6%89%8B%E5%86%8C.md)
 
 😐MyBatis
 
