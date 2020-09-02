@@ -7,7 +7,7 @@
         <name>Central Repository</name>
         <url>https://repo.maven.apache.org/maven2</url>
         <layout>default</layout>
-        //不会在中央仓库下载SNAPSHOT构件
+        //这个不会在中央仓库下载SNAPSHOT构件
         <snapshots>
           <enabled>false</enabled>
         </snapshots>
@@ -18,30 +18,23 @@ POM中配置仓库
 
     <repositories>
       <repository>
-        <id>maven-net-cn</id>
-        <name>Maven China Mirror</name>
-        <url>http://maven.net.cn/content/groups/public/</url>
-        <releases>
-          <enabled>true</enabled>
-        </releases>
-        <snapshots>
-          <enabled>false</enabled>
-        </snapshots> 
+        <id>ali-maven</id>
+        <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+        <releases><enabled>true</enabled></releases>
+        <snapshots><enabled>false</enabled></snapshots> 
       </repository>
-      //可以配置多个
-      ...
+      //可以配置多个<repository></repository>
     </repositories>
 
 settings.xml中配置仓库
 
     <profiles>  
       <profile>  
-        <id>develop</id>  
+        <id>ali</id>  
         <repositories>
           <repository>
-            <id>maven-net-cn</id>
-            <name>Maven China Mirror</name>
-            <url>http://maven.net.cn/content/groups/public/</url>
+            <id>ali-maven</id>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
             <releases><enabled>true</enabled></releases>
             <snapshots><enabled>false</enabled></snapshots>
           </repository>
@@ -50,17 +43,17 @@ settings.xml中配置仓库
     </profiles>
     
     <activeProfiles>
-      <activeProfile>develop</activeProfile>  
+      <activeProfile>ali</activeProfile>  
     </activeProfiles>
     
 settings.xml中配置镜像
 
-    //镜像就是代理
+    //镜像本质代理
     <mirrors>
       <mirror>
         <id>ali</id>
-        <name>Ali Repo</name>
         <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+        //代理中央仓库
         <mirrorOf>central</mirrorOf>
       </mirror>
     </mirrors>
