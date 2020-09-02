@@ -34,6 +34,8 @@
 * [IDEA快捷键设置](https://github.com/dlinka/technology/blob/master/DevTools/IDEA%E5%BF%AB%E6%8D%B7%E9%94%AE%E8%AE%BE%E7%BD%AE.md)
 * [IDEA如何搜索jar包里面的内容](https://github.com/dlinka/technology/blob/master/DevTools/IDEA%E5%A6%82%E4%BD%95%E6%90%9C%E7%B4%A2jar%E5%8C%85%E9%87%8C%E9%9D%A2%E7%9A%84%E5%86%85%E5%AE%B9.md)
 * [Postman](https://github.com/dlinka/technology/blob/master/DevTools/Postman.md)
+* [Maven的repository配置](https://github.com/dlinka/technology/blob/master/DevTools/Maven%E7%9A%84repository%E9%85%8D%E7%BD%AE.md)
+* [Maven的deploy配置](https://github.com/dlinka/technology/blob/master/DevTools/Maven%E7%9A%84deploy%E9%85%8D%E7%BD%AE.md)
 
 😄Protocols
 
