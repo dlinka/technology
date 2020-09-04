@@ -1,5 +1,5 @@
-CPU核总数 = CPU个数*CPU核数  
-逻辑CPU总数 = CPU核总数*超线程数
+CPU核总数 = CPU个数 * CPU核数  
+逻辑CPU总数 = CPU核总数 * 超线程数
 
 mac
 
