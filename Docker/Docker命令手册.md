@@ -9,8 +9,9 @@ run 运行镜像
 
     示例
     docker run -it centos /bin/bash
-    docker run -d centos //后台启动,但是启动后容器就会停止,因为没有前台进程
-
+    //后台启动,但是启动后容器就会停止,因为没有容器内没有进程运行
+    //反之如果有进程运行,容器就不会停止
+    docker run -d centos
 
 ps 显示容器
 
@@ -22,8 +23,8 @@ start 启动容器
 restart 重启容器  
 stop 停止容器  
 kill 强制停止容器  
-exit 退出容器  
-ctrl+p+q 退出容器,但容器不停止  
+exit 退出容器,如果有进程运行容器不会停止  
+ctrl+p+q 退出容器,如果没有进程运行容器也不停止  
 top 显示容器中进程信息  
 inspect 显示容器元数据  
 exec 进入容器,开启新的终端  
