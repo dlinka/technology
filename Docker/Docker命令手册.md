@@ -12,6 +12,7 @@ run 运行镜像
     //后台启动,但是启动后容器就会停止,因为没有容器内没有进程运行
     //反之如果有进程运行,容器就不会停止
     docker run -d centos
+    docker run -d -p 80:80 nginx
 
 ps 显示容器
 
