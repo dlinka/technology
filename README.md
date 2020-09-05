@@ -54,9 +54,6 @@
 😉JCF
 
 * [ArrayList和LinkedList的比较](https://github.com/dlinka/technology/blob/master/JCF/ArrayList%E5%92%8CLinkedList%E7%9A%84%E6%AF%94%E8%BE%83.md)
-
-😎数据结构
-
 * [Data Structure Visualization](https://www.cs.usfca.edu/~galles/visualization/Algorithms.html)
 
 😗操作系统
