@@ -35,8 +35,8 @@ exec 进入容器,开启新的终端
     
 attach 进入容器.不开启新的终端  
 cp 拷贝容器内文件到外面  
-stats 查看所有容器使用的资源情况
-commit 根据容器的改变生成一个新的镜像
+stats 查看所有容器使用的资源情况  
+commit 基于运行的容器生成一个新镜像
 
     示例
     docker commit -a="cr" -m="message" 66f596225108 tomcat:1.1
