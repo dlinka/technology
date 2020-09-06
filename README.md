@@ -58,9 +58,10 @@
 
 😗操作系统
 
-* [Linux和Mac如何查看CPU个数](https://github.com/dlinka/technology/blob/master/OS/%E5%A6%82%E4%BD%95%E6%9F%A5%E7%9C%8BCPU%E4%B8%AA%E6%95%B0.md)
+* [Linux查看CPU个数](https://github.com/dlinka/technology/blob/master/OS/%E5%A6%82%E4%BD%95%E6%9F%A5%E7%9C%8BCPU%E4%B8%AA%E6%95%B0.md)
 * [Linux权限](https://github.com/dlinka/technology/blob/master/OS/Linux%E6%9D%83%E9%99%90.md)
 * [Linux熵池](https://github.com/dlinka/technology/blob/master/OS/Linux%E7%86%B5%E6%B1%A0.md)
+* [玩转Mac](https://github.com/dlinka/technology/blob/master/OS/%E7%8E%A9%E8%BD%ACMac.md)
 
 😛Docker
 
