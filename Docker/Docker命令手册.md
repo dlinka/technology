@@ -7,7 +7,6 @@ pull 下载镜像
 rmi 删除镜像  
 run 运行镜像
 
-    示例
     //启动centos镜像,并进入容器
     docker run -it centos /bin/bash
     
@@ -21,16 +20,15 @@ run 运行镜像
     //-v挂载
     //宿主机和容器可以同步文件
     docker run -it -v ~/host/centos:~/container/centos centos /bin/bash
-    //匿名挂载,只写了容器路径
+    //匿名挂载,只写了容器路径,挂载到的宿主机目录可以通过volume命令查看
     docker run -it -v /container/centos centos /bin/bash
-    //具名挂载,前面可以加个volumeName    
+    //具名挂载,前面可以加个volumeName,挂载到的宿主机目录可以通过volume命令查看
     docker run -it -v volumeName:/container/centos centos /bin/bash
-    //ro:readonly
+    //ro表示readonly
     docker run -it -v /container/centos:ro centos /bin/bash
 
 ps 显示容器
 
-    示例
     docker ps -aq //只显示所有容器ID
 
 rm 删除容器  
@@ -44,7 +42,6 @@ top 显示容器中进程信息
 inspect 显示容器元数据  
 exec 进入容器,开启新的终端  
 
-    示例
     docker exec -it 容器ID /bin/bash
     
 attach 进入容器.不开启新的终端  
@@ -52,14 +49,14 @@ cp 拷贝容器内文件到外面
 stats 查看所有容器使用的资源情况  
 commit 基于运行的容器生成一个新镜像
 
-    示例
     docker commit -a="cr" -m="message" 66f596225108 tomcat:1.1
 
 volume 查看挂载情况
 
-    示例
     //只会显示具名挂载和匿名挂载
     docker volume ls
+    
+    //显示volumeName的挂载情况
     docker volume inspect volumeName
 
 ---
