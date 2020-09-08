@@ -21,13 +21,12 @@ run 运行镜像
     //-v挂载
     //宿主机和容器可以同步文件
     docker run -it -v ~/host/centos:~/container/centos centos /bin/bash
-    
-    //只写了容器内路径表示匿名挂载
-    //前面加了volumeName的表示具名挂载
-    //默认映射
+    //匿名挂载,只写了容器路径
     docker run -it -v /container/centos centos /bin/bash
+    //具名挂载,前面可以加个volumeName    
     docker run -it -v volumeName:/container/centos centos /bin/bash
-    
+    //ro:readonly
+    docker run -it -v /container/centos:ro centos /bin/bash
 
 ps 显示容器
 
@@ -59,6 +58,8 @@ commit 基于运行的容器生成一个新镜像
 volume 查看挂载情况
 
     示例
+    //只会显示具名挂载和匿名挂载
     docker volume ls
+    docker volume inspect volumeName
 
 ---
