@@ -8,11 +8,26 @@ rmi 删除镜像
 run 运行镜像
 
     示例
+    //启动centos镜像,并进入容器
     docker run -it centos /bin/bash
-    //后台启动,但是启动后容器就会停止,因为没有容器内没有进程运行
-    //反之如果有进程运行,容器就不会停止
+    
+    //-d表示后台启动
+    //centos启动后容器就会停止,因为没有容器内没有进程运行,反之如果有进程运行,容器就不会停止
     docker run -d centos
+    
+    //-p端口映射
     docker run -d -p 80:80 nginx
+    
+    //-v挂载
+    //宿主机和容器可以同步文件
+    docker run -it -v ~/host/centos:~/container/centos centos /bin/bash
+    
+    //只写了容器内路径表示匿名挂载
+    //前面加了volumeName的表示具名挂载
+    //默认映射
+    docker run -it -v /container/centos centos /bin/bash
+    docker run -it -v volumeName:/container/centos centos /bin/bash
+    
 
 ps 显示容器
 
@@ -40,5 +55,10 @@ commit 基于运行的容器生成一个新镜像
 
     示例
     docker commit -a="cr" -m="message" 66f596225108 tomcat:1.1
+
+volume 查看挂载情况
+
+    示例
+    docker volume ls
 
 ---
