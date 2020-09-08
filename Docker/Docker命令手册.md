@@ -26,6 +26,8 @@ run 运行镜像
     docker run -it -v volumeName:/container/centos centos /bin/bash
     //ro表示readonly
     docker run -it -v /container/centos:ro centos /bin/bash
+    //挂载继承
+    docker run -it --name centos02 --volumes-from centos01 centos
 
 ps 显示容器
 
