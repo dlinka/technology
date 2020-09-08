@@ -3,7 +3,8 @@
 
 😍Java
 
-* [Java新特性(持续更新)](https://github.com/dlinka/technology/blob/master/Java/%E6%96%B0%E7%89%B9%E6%80%A7.md)
+* [Java新特性](https://github.com/dlinka/technology/blob/master/Java/%E6%96%B0%E7%89%B9%E6%80%A7.md)
+* [Java代码规范](https://github.com/dlinka/technology/blob/master/Java/Java%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83.md)
 
 😃DB
 
