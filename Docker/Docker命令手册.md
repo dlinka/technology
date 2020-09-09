@@ -1,5 +1,14 @@
 version 显示Docker版本  
-info 显示详细信息,还有容器和镜像的数量  
+info 显示详细信息
+
+    //会显示当前容器和镜像情况
+    Server:
+     Containers: 0
+      Running: 0
+      Paused: 0
+      Stopped: 0
+     Images: 0
+
 cmd --help 显示命令用法  
 
     //显示ps命令用法
