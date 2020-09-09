@@ -1,6 +1,10 @@
 version 显示Docker版本  
 info 显示详细信息,还有容器和镜像的数量  
-CMD --help 参数解释  
+cmd --help 显示命令用法  
+
+    //显示ps命令用法
+    docker ps --help
+
 images 显示镜像  
 search 搜索镜像  
 pull 下载镜像  
