@@ -74,4 +74,8 @@ volume 查看挂载情况
     //显示volumeName的挂载情况
     docker volume inspect volumeName
 
+history 查看镜像构建历史
+
+    docker history imageId
+
 ---
