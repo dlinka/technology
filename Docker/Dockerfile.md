@@ -20,3 +20,13 @@ Dockerfile
     docker build -f Dockerfile -t centos-diy:1.0 .
 
 ---
+
+CMD
+
+    CMD只有最后一个会生效
+
+ENTRYPOINT
+
+    ENTRYPOING可以追加命令
+    Dockerfile:ENTRYPOINT ["ls","-a"]
+    执行的时候可以:docker run -it imageId -l
