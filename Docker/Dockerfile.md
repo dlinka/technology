@@ -46,6 +46,8 @@ Dockerfile
 
 ---
 
+命令手册
+
 CMD
 
     CMD只有最后一个会生效
