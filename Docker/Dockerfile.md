@@ -3,7 +3,7 @@
 Dockerfile
 
     FROM centos
-    MAINTAINER cr<dlinka.cr7@gmail.com>
+    MAINTAINER CR<dlinka.cr7@gmail.com>
     ENV ENTRY_PATH /cr
     WORKDIR $ENTRY_PATH
     
@@ -18,6 +18,31 @@ Dockerfile
 构建
 
     docker build -f Dockerfile -t centos-diy:1.0 .
+
+---
+
+如何构建一个自己的tomcat镜像
+
+Dockerfile
+
+    FROM centos
+    MAINTAINER CR<dlinka.cr7@gmail.com>
+
+    # 下载下面两个文件跟Dockerfile同目录
+    ADD apache-tomcat-9.0.37.tar.gz /usr/local
+    ADD jdk-8u221-linux-x64.tar.gz /usr/local
+    
+    WORKDIR /usr/local
+    ENV JAVA_HOME /usr/local/jdk1.8.0_221
+    EVN CLASSPATH $JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+    
+    CMD /usr/local/apache-tomcat-9.0.37/bin/catalina.sh run
+
+构建
+
+    //文件名为Dockerfile,默认可以不用写-f
+    docker build -t tomcat-diy:1.0 .
+
 
 ---
 
