@@ -69,6 +69,7 @@
 * [Docker的安装](https://github.com/dlinka/technology/blob/master/Docker/Docker%E7%9A%84%E5%AE%89%E8%A3%85.md)
 * [Docker手册](https://github.com/dlinka/technology/blob/master/Docker/Docker%E5%91%BD%E4%BB%A4%E6%89%8B%E5%86%8C.md)
 * [Dockerfile](https://github.com/dlinka/technology/blob/master/Docker/Dockerfile.md)
+* [Docker推送镜像到远程仓库](https://github.com/dlinka/technology/blob/master/Docker/%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93.md)
 
 ---
 
