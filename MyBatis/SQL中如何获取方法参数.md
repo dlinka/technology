@@ -70,10 +70,15 @@
     select * from user where age = #{age} and name = #{1}
     
     User selectUser(int age, @Param("company") Company company)
+    ↓
+    //第一个参数:#{0|param1}
+    //第二个参数:#{注解值.属性名|param2.属性名}
+    select * from user where age = #{0} and company_id = #{company.companyId}
     
-    
-    
-    
-    
-    
-    
+    User selectUser(@Param("age") int age, @Param("company") Company company)
+    ↓
+    //第一个参数:#{注解值|param1}
+    //第二个参数:#{注解值.属性名|param2.属性名}
+    select * from user where age = #{age} and company_id = #{company.companyId}
+
+---
