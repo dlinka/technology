@@ -15,6 +15,8 @@
 
 😐MyBatis
 
+* [如何将SQL中字段和属性对应](https://github.com/dlinka/technology/blob/master/MyBatis/%E5%A6%82%E4%BD%95%E5%B0%86SQL%E4%B8%AD%E5%AD%97%E6%AE%B5%E5%92%8C%E5%B1%9E%E6%80%A7%E5%AF%B9%E5%BA%94.md)
+* [SQL中如何获取方法参数](https://github.com/dlinka/technology/blob/master/MyBatis/SQL%E4%B8%AD%E5%A6%82%E4%BD%95%E8%8E%B7%E5%8F%96%E6%96%B9%E6%B3%95%E5%8F%82%E6%95%B0.md)
 * [MyBatis源码解析一-构建SqlSessionFactory](https://github.com/dlinka/technology/blob/master/MyBatis/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B8%80-%E6%9E%84%E5%BB%BASqlSessionFactory.md)
 * [MyBatis源码解析二-构建SqlSession](https://github.com/dlinka/technology/blob/master/MyBatis/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%BA%8C-%E6%9E%84%E5%BB%BASqlSession.md)
 * [MyBatis源码解析三-构建UserMapper](https://github.com/dlinka/technology/blob/master/MyBatis/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B8%89-%E6%9E%84%E5%BB%BAUserMapper.md)
