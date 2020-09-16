@@ -31,13 +31,17 @@
 
 * [持久化机制](https://github.com/dlinka/technology/blob/master/Redis/%E6%8C%81%E4%B9%85%E5%8C%96%E6%9C%BA%E5%88%B6.md)
 
+😣Maven
+
+* [Maven的repository配置](https://github.com/dlinka/technology/blob/master/Maven/Maven%E7%9A%84repository%E9%85%8D%E7%BD%AE.md)
+* [Maven的deploy配置](https://github.com/dlinka/technology/blob/master/Maven/Maven%E7%9A%84deploy%E9%85%8D%E7%BD%AE.md)
+* [release插件的用法](https://github.com/dlinka/technology/blob/master/Maven/release%E6%8F%92%E4%BB%B6.md)
+
 😂DevTools
 
 * [IDEA](https://github.com/dlinka/technology/blob/master/DevTools/IDEA.md)
 * [程序员必装的IDEA插件](https://github.com/dlinka/technology/blob/master/DevTools/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E8%A3%85%E7%9A%84IDEA%E6%8F%92%E4%BB%B6.md)
 * [Postman](https://github.com/dlinka/technology/blob/master/DevTools/Postman.md)
-* [Maven的repository配置](https://github.com/dlinka/technology/blob/master/DevTools/Maven%E7%9A%84repository%E9%85%8D%E7%BD%AE.md)
-* [Maven的deploy配置](https://github.com/dlinka/technology/blob/master/DevTools/Maven%E7%9A%84deploy%E9%85%8D%E7%BD%AE.md)
 
 😄Protocols
 
