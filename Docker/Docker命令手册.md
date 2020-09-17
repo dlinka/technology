@@ -41,7 +41,14 @@ run 运行镜像
     docker run -it -v /container/centos:ro centos /bin/bash
     //挂载继承
     docker run -it --name centos02 --volumes-from centos01 centos
-
+    
+    //--link会修改tomcat02的host文件
+    //192.168.0.2 tomcat01
+    docker run -d --name tomcat02 --link tomcat01 tomcat
+    
+    //使用自定义的网络运行
+    docker run -d -P --name tomcat01 --net diy-net tomcat
+    
 ps 显示容器
 
     docker ps -aq //只显示所有容器ID
@@ -77,5 +84,16 @@ volume 查看挂载情况
 history 查看镜像构建历史
 
     docker history imageId
+    
+network
+
+    //显示所有网络
+    docker network ls
+    
+    //显示网络详细信息
+    docker network inspect 80ea107b412f
+    
+    //创建一个网络
+    docker network create --driver bridge  --subnet 192.168.0.0/16 --gateway 192.168.0.1 diy-net
 
 ---
