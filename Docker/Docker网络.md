@@ -44,3 +44,16 @@ docker0
     64 bytes from 172.17.0.5: icmp_seq=1 ttl=64 time=0.178 ms
 
 ---
+
+自定义网络
+
+    docker network create --driver bridge  --subnet 192.168.0.0/16 --gateway 192.168.0.1 diy-net
+
+    docker run -d -P --name tomcat01 --net diy-net tomcat
+    docker run -d -P --name tomcat02 --net diy-net tomcat
+    
+    //可以直接使用容器名进行ping
+    docker exec -it tomcat01 ping tomcat02
+    PING tomcat02 (192.168.0.3) 56(84) bytes of data.
+    64 bytes from tomcat02.diy-net (192.168.0.3): icmp_seq=1 ttl=64 time=0.091 ms
+    
