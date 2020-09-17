@@ -46,7 +46,7 @@ run 运行镜像
     //192.168.0.2 tomcat01
     docker run -d --name tomcat02 --link tomcat01 tomcat
     
-    //使用自定义的网络运行
+    //使用自定义网络运行
     docker run -d -P --name tomcat01 --net diy-net tomcat
     
 ps 显示容器
