@@ -96,7 +96,7 @@ network
     //创建一个网络
     docker network create --driver bridge  --subnet 192.168.0.0/16 --gateway 192.168.0.1 diy-net
     
-    //把
+    //把容器加入到diy-net中
     docker network connect diy-net tomcat01
 
 ---
