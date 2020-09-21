@@ -1,3 +1,17 @@
+Dockerfile reference
+
+CMD
+
+    如果有多个CMD,只有最后一个会生效
+
+ENTRYPOINT
+
+    ENTRYPOING可以追加命令
+    Dockerfile:ENTRYPOINT ["ls","-a"]
+    执行的时候可以:docker run -it imageId -l
+
+---
+
 如何构建一个自己的centos镜像
 
 Dockerfile
@@ -46,14 +60,4 @@ Dockerfile
 
 ---
 
-命令手册
 
-CMD
-
-    CMD只有最后一个会生效
-
-ENTRYPOINT
-
-    ENTRYPOING可以追加命令
-    Dockerfile:ENTRYPOINT ["ls","-a"]
-    执行的时候可以:docker run -it imageId -l
