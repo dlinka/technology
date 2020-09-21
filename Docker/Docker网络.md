@@ -1,4 +1,4 @@
-docker0
+容器和宿主机之间网络连通测试
 
     ip add
     ↓
@@ -15,7 +15,7 @@ docker0
     
     docker exec -it feeeccce7613 ip addr
     ↓
-    //容器跟宿主机相对应的网卡
+    //容器内跟宿主机相对应的网卡
     201: eth0@if202: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default
      inet 172.17.0.4/16 brd 172.17.255.255 scope global eth0
     
@@ -29,10 +29,10 @@ docker0
     PING 172.17.0.1 (172.17.0.1) 56(84) bytes of data.
     64 bytes from 172.17.0.1: icmp_seq=1 ttl=64 time=0.079 ms
     
-    //再启动一个tomcat
+容器和容器之间网络连通测试
+
     docker run -d tomcat
     
-    //查看ip
     docker exec -it 6d6a82d8e029 ip addr
     ↓
     203: eth0@if204: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default
@@ -43,17 +43,16 @@ docker0
     PING 172.17.0.5 (172.17.0.5) 56(84) bytes of data.
     64 bytes from 172.17.0.5: icmp_seq=1 ttl=64 time=0.178 ms
 
----
-
-自定义网络
+Docker自定义网络
 
     docker network create --driver bridge  --subnet 192.168.0.0/16 --gateway 192.168.0.1 diy-net
 
     docker run -d -P --name tomcat01 --net diy-net tomcat
     docker run -d -P --name tomcat02 --net diy-net tomcat
     
-    //可以直接使用容器名进行ping
+    //使用容器名进行ping
     docker exec -it tomcat01 ping tomcat02
     PING tomcat02 (192.168.0.3) 56(84) bytes of data.
     64 bytes from tomcat02.diy-net (192.168.0.3): icmp_seq=1 ttl=64 time=0.091 ms
     
+---
