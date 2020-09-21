@@ -12,9 +12,7 @@ ENTRYPOINT
 
 ---
 
-如何构建一个自己的centos镜像
-
-Dockerfile
+构建一个自己的centos镜像
 
     FROM centos
     MAINTAINER CR<dlinka.cr7@gmail.com>
@@ -35,9 +33,7 @@ Dockerfile
 
 ---
 
-如何构建一个自己的tomcat镜像
-
-Dockerfile
+构建一个自己的tomcat镜像
 
     FROM centos
     MAINTAINER CR<dlinka.cr7@gmail.com>
@@ -60,4 +56,13 @@ Dockerfile
 
 ---
 
+构建一个Spring Boot镜像
 
+    FROM java:8
+    MAINTAINER CR<dlinka.cr7@gmail.com>
+    WORKDIR /usr/local
+    
+    COPY demo-0.0.1-SNAPSHOT.jar springboot/
+    CMD java -jar /usr/local/springboot/demo-0.0.1-SNAPSHOT.jar
+
+---
