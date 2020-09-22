@@ -1,28 +1,31 @@
-CPU核总数 = CPU个数 * CPU核数  
-逻辑CPU总数 = CPU核总数 * 超线程数
+如何计算CPU个数
+
+    CPU核总数 = CPU个数 * CPU核数  
+    逻辑CPU总数 = CPU核总数 * 超线程数
 
 mac
 
     sysctl machdep.cpu
-    ...
-    //CPU核总数
-    machdep.cpu.core_count: 2
-    //逻辑CPU总数
-    machdep.cpu.thread_count: 4
+    ↓
+    machdep.cpu.core_count: 2 //CPU核总数
+    machdep.cpu.thread_count: 4 //逻辑CPU总数
     
 linux
 
+    //查看CPU个数
+    //physical id是物理CPU的id
     cat /proc/cpuinfo|grep "physical id"|sort|uniq
-    //2个物理CPU
     physical id     : 0
-    physical id     : 1
     
+    //查看CPU核数
+    //cpu cores是这个物理CPU上的CPU核数
     cat /proc/cpuinfo|grep "cpu cores"|sort|uniq
-    //每个物理CPU上有4个核
     cpu cores       : 4
     
+    //查看CPU核总数
+        core id //CPU核id
+    //CPU核总数
     cat /proc/cpuinfo|grep "core id"|sort|uniq
-    //CPU核总数为8
     core id         : 0
     core id         : 1
     core id         : 2
@@ -56,9 +59,9 @@ linux
     processor       : 9
 
     processor //逻辑CPU的id
-    physical id //物理CPU的id
-    core id //CPU核id
-    cpu cores //这个物理CPU上的CPU核数
+    
+
+    
     siblings //这个物理CPU上的逻辑CPU数
     
 ---
