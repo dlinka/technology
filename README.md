@@ -34,6 +34,10 @@
 
 * [持久化机制](https://github.com/dlinka/technology/blob/master/Redis/%E6%8C%81%E4%B9%85%E5%8C%96%E6%9C%BA%E5%88%B6.md)
 
+😲MQ
+
+* [RocketMQ](https://github.com/dlinka/technology/blob/master/MQ/RocketMQ.md)
+
 😣Maven
 
 * [Maven的repository配置](https://github.com/dlinka/technology/blob/master/Maven/Maven%E7%9A%84repository%E9%85%8D%E7%BD%AE.md)
