@@ -35,4 +35,15 @@
     //运行
     java -jar rocketmq-console-ng-2.0.0.jar --rocketmq.config.namesrvAddr=127.0.0.1:9876
     
+测试
+
+    //修改tools.sh
+    export NAMESRV_ADDR=localhost:9876
+    
+    //发送消息
+    ./tools.sh org.apache.rocketmq.example.quickstart.Producer
+    
+    //消费消息
+    ./tools.sh org.apache.rocketmq.example.quickstart.Consumer
+
 ---
