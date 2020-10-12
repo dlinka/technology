@@ -1,48 +1,32 @@
-下面所有的情况都可以自测看下MyBatis打出来的日志,通过日志都会告诉你怎么用  
+所有的情况都可以自测看下MyBatis打出来的日志  
+通过日志都会告诉你怎么用  
 我这里就是备份记忆,省的自测浪费时间了  
 
+方法为单个参数
 
-方法为单个参数的情况
+    #{任意名}
+    User selectUserById(int userId) -> select * from user where user_id = #{userId}
 
-    User selectUserById(int userId)
-    ↓
-    //#{任意名}
-    select * from user where user_id = #{userId}
+    #{注解值或者param1}
+    User selectUserById(@Param("userId") int userId) -> select * from user where user_id = #{userId}
     
-    User selectUserById(@Param("userId") int userId)
-    ↓
-    //#{注解值或者param1}
-    select * from user where user_id = #{userId}
+    #{属性名}
+    User selectUserByUser(User user) -> select * from user where user_id = #{userId}
     
-    User selectUserByUser(User user)
-    ↓
-    //#{属性名}
-    select * from user where user_id = #{userId}
+    #{注解值.属性名或者param1.属性名}
+    User selectUserByUser(@Param("user") User user) -> select * from user where user_id = #{user.userId}
     
-    User selectUserByUser(@Param("user") User user)
-    ↓
-    //#{注解值.属性名或者param1.属性名}
-    select * from user where user_id = #{user.userId}
+    #{key}
+    User selectUserByMap(Map<String, Object> map) -> select * from user where user_id = #{userId}
+
+    #{注解值.key或者param1.key}
+    User selectUserByMap(@Param("map") Map<String, Object> map) -> select * from user where user_id = #{map.userId}
     
-    User selectUserByMap(Map<String, Object> map)
-    ↓
-    //#{key}
-    select * from user where user_id = #{userId}
-    
-    User selectUserByMap(@Param("map") Map<String, Object> map)
-    ↓
-    //#{注解值.key或者param1.key}
-    select * from user where user_id = #{map.userId}
-    
-    User selectUserByList(List<Integer> idList)
-    ↓
-    //#{collection[索引]或者list[索引]}
-    select * from user where user_id = #{list[0]}
-    
-    User selectUserByList(@Param("idList") List<Integer> idList)
-    ↓
-    //#{注解值[索引]或者param1[索引]}
-    select * from user where user_id = #{idList[0]}
+    #{collection[索引]或者list[索引]}
+    User selectUserByList(List<Integer> idList) -> select * from user where user_id = #{list[0]}
+
+    #{注解值[索引]或者param1[索引]}
+    User selectUserByList(@Param("idList") List<Integer> idList) -> select * from user where user_id = #{idList[0]}
 
 ---
     
