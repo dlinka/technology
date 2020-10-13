@@ -9,3 +9,12 @@ git命令
 
     //查看每行的提交记录
     git blame file
+
+.gitignore规则
+
+    *.class //忽略所有class
+    !HelloWorld.class //HelloWorld.class不忽略
+    /*.iml //只会忽略根目录的iml文件
+    aaa/ //忽略任意aaa目录
+    aaa //忽略任意aaa目录和文件
+    
