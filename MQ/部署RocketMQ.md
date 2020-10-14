@@ -14,7 +14,7 @@
     ./mqnamesrv
     
     
-    //进入bin,
+    //进入bin
     //修改runbroker.sh
     -server -Xms512m -Xmx512m -Xmn256m
     //启动broker
