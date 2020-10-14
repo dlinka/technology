@@ -1,7 +1,7 @@
 单机部署RockerMQ
 
     //官方给的教程是通过source进行安装
-    //直接下载最近Binary
+    //这里使用Binary安装
     下载地址:https://rocketmq.apache.org/dowloading/releases/
     
     //解压
