@@ -51,7 +51,7 @@
 
 3.3进入BrokerOuterAPI的registerBrokerAll
 
-    //构造上传
+    //构造上报给NameServer的数据
     RegisterBrokerBody requestBody = new RegisterBrokerBody();
     requestBody.setTopicConfigSerializeWrapper(topicConfigWrapper);
     
