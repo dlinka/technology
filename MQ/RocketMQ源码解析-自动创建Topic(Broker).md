@@ -69,10 +69,19 @@
 
 2.进入TopicConfigManager的createTopicInSendMessageMethod
   
-    //创建
+    //创建自定义TopicConfig对象
     topicConfig = new TopicConfig(topic);
-            }
+    ...
+    if (topicConfig != null) {
+        this.topicConfigTable.put(topic, topicConfig);
+        //持久化到${user.home}/store/config/topics.json
+        this.persist();
+    }
+    ...
+    //同步到NameServer
+    if (createNew) {
+        this.brokerController.registerBrokerAll(false, true, true);
+    }
     
-    
-    
+---
     
