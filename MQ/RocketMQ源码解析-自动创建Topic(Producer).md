@@ -12,15 +12,15 @@
     ↓
     TopicPublishInfo topicPublishInfo = this.tryToFindTopicPublishInfo(msg.getTopic());
     if (topicPublishInfo != null && topicPublishInfo.ok()) {
-        //这里就是获取到了发送的逻辑
     }
-    //这里没有对应的Topic就报错
+    //没有对应的Topic报错
     throw new MQClientException("No route info of this topic: " + msg.getTopic() + FAQUrl.suggestTodo(FAQUrl.NO_TOPIC_ROUTE_INFO),
             null).setResponseCode(ClientErrorCode.NOT_FOUND_TOPIC_EXCEPTION);
             
 3.进入DefaultMQProducerImpl的tryToFindTopicPublishInfo
+    
     //TopicPublishInfo保存本地Topic相关信息
-    //启动的时候会添加Topic:TBW102
+    //默认会添加Topic:TBW102
     TopicPublishInfo topicPublishInfo = this.topicPublishInfoTable.get(topic);
     if (null == topicPublishInfo || !topicPublishInfo.ok()) {
         //从NameServer获取Topic的信息
@@ -28,12 +28,11 @@
         topicPublishInfo = this.topicPublishInfoTable.get(topic);
     }
 
-    //获取到了返回
     if (topicPublishInfo.isHaveTopicRouterInfo() || topicPublishInfo.ok()) {
         return topicPublishInfo;
     } else {
         //没获取到再次获取
-        //参数不一样
+        //参数跟上面不一样,使用Topic:TBW102
         this.mQClientFactory.updateTopicRouteInfoFromNameServer(topic, true, this.defaultMQProducer);
         topicPublishInfo = this.topicPublishInfoTable.get(topic);
         return topicPublishInfo;
@@ -41,15 +40,20 @@
     
 4.进入MQClientInstance的updateTopicRouteInfoFromNameServer
 
-    return updateTopicRouteInfoFromNameServer(topic, false, null);
-    ↓
-    ↓
     TopicRouteData topicRouteData;
     if (isDefault && defaultMQProducer != null) {
-        //获取Topic:TBW102
-        topicRouteData = this.mQClientAPIImpl.getDefaultTopicRouteInfoFromNameServer(defaultMQProducer.getCreateTopicKey(), 1000 * 3);
+        //Topic:TBW102
+        topicRouteData = this.mQClientAPIImpl.getDefaultTopicRouteInfoFromNameServer(defaultMQProducer.getCreateTopicKey(), 1000 * 3); //5
     } else {
         topicRouteData = this.mQClientAPIImpl.getTopicRouteInfoFromNameServer(topic, 1000 * 3);
+    }
+    ...
+    //这里包含自己创建的Topic
+    TopicPublishInfo publishInfo = topicRouteData2TopicPublishInfo(topic, topicRouteData);
+    publishInfo.setHaveTopicRouterInfo(true);
+    if (impl != null) {
+        //更新topicPublishInfoTable
+        impl.updateTopicPublishInfo(topic, publishInfo);
     }
 
 5.进入MQClientAPIImpl的getDefaultTopicRouteInfoFromNameServer
@@ -57,7 +61,7 @@
     return getTopicRouteInfoFromNameServer(topic, timeoutMillis, false);
     ↓
     ↓
-    //这就是发送NameServer的代码
+    //发送到NameServer
     RemotingCommand request = RemotingCommand.createRequestCommand(RequestCode.GET_ROUTEINFO_BY_TOPIC, requestHeader);
     RemotingCommand response = this.remotingClient.invokeSync(null, request, timeoutMillis);
     
