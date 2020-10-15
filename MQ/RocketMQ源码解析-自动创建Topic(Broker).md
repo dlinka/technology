@@ -55,5 +55,24 @@
     RegisterBrokerBody requestBody = new RegisterBrokerBody();
     requestBody.setTopicConfigSerializeWrapper(topicConfigWrapper);
     
+---
+
+自定义的Topic消息到达Broker后  
+
+1.进入AbstractSendMessageProcessor的msgCheck
+
+    //获取不到
+    TopicConfig topicConfig = this.brokerController.getTopicConfigManager().selectTopicConfig(requestHeader.getTopic());
+    if (null == topicConfig) {
+        topicConfig = this.brokerController.getTopicConfigManager().createTopicInSendMessageMethod(requestHeader.getTopic(), requestHeader.getDefaultTopic(), RemotingHelper.parseChannelRemoteAddr(ctx.channel()), requestHeader.getDefaultTopicQueueNums(), topicSysFlag);
+    }
+
+2.进入TopicConfigManager的createTopicInSendMessageMethod
+  
+    //创建
+    topicConfig = new TopicConfig(topic);
+            }
+    
+    
     
     
