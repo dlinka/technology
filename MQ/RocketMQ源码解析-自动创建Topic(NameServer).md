@@ -1,13 +1,13 @@
 1.进入DefaultRequestProcessor的processRequest
 
-    //注册Broker到NameServer
+    //处理Broker注册到NameServer
     case RequestCode.REGISTER_BROKER:
         Version brokerVersion = MQVersion.value2Version(request.getVersion());
         if (brokerVersion.ordinal() >= MQVersion.Version.V3_0_11.ordinal()) {
             return this.registerBrokerWithFilterServer(ctx, request); //2
         }
 
-    //从NameServer获取Topic信息
+    //处理Producer从NameServer获取Topic信息
     case RequestCode.GET_ROUTEINFO_BY_TOPIC:
         return this.getRouteInfoByTopic(ctx, request); //3
 
@@ -19,32 +19,30 @@
             requestHeader.getBrokerName(),
             requestHeader.getBrokerId(),
             requestHeader.getHaServerAddr(),
-            //这个参数的详情看Broker篇
             registerBrokerBody.getTopicConfigSerializeWrapper(),
             registerBrokerBody.getFilterServerList(),
             ctx.channel());
+    ↓
+    ↓
+    this.createAndUpdateQueueData(brokerName, entry.getValue());
+    ↓
+    ↓
+    List<QueueData> queueDataList = this.topicQueueTable.get(topicConfig.getTopicName());
+    if (null == queueDataList) {
+        queueDataList = new LinkedList<QueueData>();
+        queueDataList.add(queueData);
+        //Broker传过来的的Topic:TBW102会保存在这里
+        this.topicQueueTable.put(topicConfig.getTopicName(), queueDataList);
+    }
 
-2.2进入RouteInfoManager的registerBroker
-
-     this.createAndUpdateQueueData(brokerName, entry.getValue());
-     ↓
-     ↓
-     List<QueueData> queueDataList = this.topicQueueTable.get(topicConfig.getTopicName());
-     if (null == queueDataList) {
-         queueDataList = new LinkedList<QueueData>();
-         queueDataList.add(queueData);
-         //这里保存Broker的Topic:TBW102
-         this.topicQueueTable.put(topicConfig.getTopicName(), queueDataList);
-     }
-
-3.1进入DefaultRequestProcessor的getRouteInfoByTopic
+3.进入DefaultRequestProcessor的getRouteInfoByTopic
 
     TopicRouteData topicRouteData = this.namesrvController.getRouteInfoManager().pickupTopicRouteData(requestHeader.getTopic());
-     
-3.2进入RouteInfoManager的pickupTopicRouteData
-
+    ↓
+    ↓
+    //经过步骤2
+    //Producer使用Topic:TBW102可以获取到Broker路由
     List<QueueData> queueDataList = this.topicQueueTable.get(topic);
-    //这里可以获取到Topic:TBW102
     if (queueDataList != null) {
         topicRouteData.setQueueDatas(queueDataList);
         foundQueueData = true;
