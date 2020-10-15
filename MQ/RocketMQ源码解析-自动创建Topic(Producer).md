@@ -1,3 +1,11 @@
+示例
+
+    DefaultMQProducer producer = new DefaultMQProducer("new_topic_group");
+    producer.setNamesrvAddr("localhost:9876");
+    producer.start();
+    SendResult sendResult = producer.send(new Message("new_topic", "",  message.getBytes()));
+    producer.shutdown();
+
 1.进入DefaultMQProducer的send
 
     return this.defaultMQProducerImpl.send(msg);
@@ -13,17 +21,17 @@
     TopicPublishInfo topicPublishInfo = this.tryToFindTopicPublishInfo(msg.getTopic());
     if (topicPublishInfo != null && topicPublishInfo.ok()) {
     }
-    //没有对应的Topic报错
+    //没有相应的Topic抛异常
     throw new MQClientException("No route info of this topic: " + msg.getTopic() + FAQUrl.suggestTodo(FAQUrl.NO_TOPIC_ROUTE_INFO),
             null).setResponseCode(ClientErrorCode.NOT_FOUND_TOPIC_EXCEPTION);
             
 3.进入DefaultMQProducerImpl的tryToFindTopicPublishInfo
     
-    //TopicPublishInfo保存本地Topic相关信息
-    //默认会添加Topic:TBW102
+    //topicPublishInfoTable作用是保存所有Topic的相关信息
+    //初始化topicPublishInfoTable的时候会添加Topic:TBW102
     TopicPublishInfo topicPublishInfo = this.topicPublishInfoTable.get(topic);
     if (null == topicPublishInfo || !topicPublishInfo.ok()) {
-        //从NameServer获取Topic的信息
+        //根据自定义的Topic从NameServer获取信息
         this.mQClientFactory.updateTopicRouteInfoFromNameServer(topic);
         topicPublishInfo = this.topicPublishInfoTable.get(topic);
     }
@@ -31,9 +39,8 @@
     if (topicPublishInfo.isHaveTopicRouterInfo() || topicPublishInfo.ok()) {
         return topicPublishInfo;
     } else {
-        //没获取到再次获取
-        //参数跟上面不一样,使用Topic:TBW102
-        this.mQClientFactory.updateTopicRouteInfoFromNameServer(topic, true, this.defaultMQProducer);
+        //没获取到再使用Topic:TBW102获取
+        this.mQClientFactory.updateTopicRouteInfoFromNameServer(topic, true, this.defaultMQProducer); //4
         topicPublishInfo = this.topicPublishInfoTable.get(topic);
         return topicPublishInfo;
     }
@@ -42,18 +49,17 @@
 
     TopicRouteData topicRouteData;
     if (isDefault && defaultMQProducer != null) {
-        //Topic:TBW102
         topicRouteData = this.mQClientAPIImpl.getDefaultTopicRouteInfoFromNameServer(defaultMQProducer.getCreateTopicKey(), 1000 * 3); //5
     } else {
         topicRouteData = this.mQClientAPIImpl.getTopicRouteInfoFromNameServer(topic, 1000 * 3);
     }
     ...
-    //这里包含自己创建的Topic
     TopicPublishInfo publishInfo = topicRouteData2TopicPublishInfo(topic, topicRouteData);
     publishInfo.setHaveTopicRouterInfo(true);
+    ...
     if (impl != null) {
         //更新topicPublishInfoTable
-        impl.updateTopicPublishInfo(topic, publishInfo);
+        impl.updateTopicPublishInfo(topic, publishInfo); //6
     }
 
 5.进入MQClientAPIImpl的getDefaultTopicRouteInfoFromNameServer
@@ -64,6 +70,11 @@
     //发送到NameServer
     RemotingCommand request = RemotingCommand.createRequestCommand(RequestCode.GET_ROUTEINFO_BY_TOPIC, requestHeader);
     RemotingCommand response = this.remotingClient.invokeSync(null, request, timeoutMillis);
+    
+6.进入DefaultMQProducerImpl的updateTopicPublishInfo
+
+    //将自己创建的topic放入topicPublishInfoTable中
+    TopicPublishInfo prev = this.topicPublishInfoTable.put(topic, info);
     
 ---
     
