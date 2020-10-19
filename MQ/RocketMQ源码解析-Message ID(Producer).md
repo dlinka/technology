@@ -21,6 +21,7 @@ msgId的生成规则
     MessageClientIDSetter.setUniqID(msg);
     ↓
     ↓
+    //PROPERTY_UNIQ_CLIENT_MESSAGE_ID_KEYIDX = "UNIQ_KEY";
     msg.putProperty(MessageConst.PROPERTY_UNIQ_CLIENT_MESSAGE_ID_KEYIDX, createUniqID());
 
 2.进入MessageClientIDSetter的createUniqID方法
@@ -48,3 +49,13 @@ msgId的生成规则
     buffer.putShort((short) COUNTER.getAndIncrement());
 
 ---
+
+UNIQ_KEY如何赋值到msgId
+
+    String uniqMsgId = MessageClientIDSetter.getUniqID(msg);
+    SendResult sendResult = new SendResult(sendStatus, uniqMsgId, responseHeader.getMsgId(), messageQueue, responseHeader.getQueueOffset());
+    ↓
+    ↓
+
+    
+    
