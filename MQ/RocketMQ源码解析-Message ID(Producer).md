@@ -42,10 +42,9 @@ msgId的生成规则
 
 4.进入MessageClientIDSetter的createUniqIDBuffer方法
 
-
-
-    
-
-
+    ByteBuffer buffer = ByteBuffer.allocate(4 + 2);
+    //buffer包含时间、计数器
+    buffer.putInt((int) (System.currentTimeMillis() - startTime));
+    buffer.putShort((short) COUNTER.getAndIncrement());
 
 ---
