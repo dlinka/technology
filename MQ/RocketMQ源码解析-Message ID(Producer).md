@@ -50,10 +50,12 @@ msgId的生成规则
 
 ---
 
-UNIQ_KEY如何赋值到msgId
+赋值msgId  
+
+1.进入MQClientAPIImpl的processSendResponse方法
 
     String uniqMsgId = MessageClientIDSetter.getUniqID(msg);
-    //public SendResult(SendStatus sendStatus, String msgId, String offsetMsgId, MessageQueue messageQueue, long queueOffset)
+    ...
     SendResult sendResult = new SendResult(sendStatus, uniqMsgId, responseHeader.getMsgId(), messageQueue, responseHeader.getQueueOffset());
 
 ---
