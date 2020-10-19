@@ -53,9 +53,7 @@ msgId的生成规则
 UNIQ_KEY如何赋值到msgId
 
     String uniqMsgId = MessageClientIDSetter.getUniqID(msg);
+    //public SendResult(SendStatus sendStatus, String msgId, String offsetMsgId, MessageQueue messageQueue, long queueOffset)
     SendResult sendResult = new SendResult(sendStatus, uniqMsgId, responseHeader.getMsgId(), messageQueue, responseHeader.getQueueOffset());
-    ↓
-    ↓
 
-    
-    
+---
