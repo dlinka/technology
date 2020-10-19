@@ -4,18 +4,6 @@ SendResult [sendStatus=SEND_OK, msgId=0A00C334F59A18B4AAC25F363E9D0000, offsetMs
 
 offsetMsgId的生成规则
 
-    SendResult sendResult = new SendResult(sendStatus, uniqMsgId, responseHeader.getMsgId(), messageQueue, responseHeader.getQueueOffset());
-    ↓
-    ↓
-    public SendResult(SendStatus sendStatus, String msgId, String offsetMsgId, MessageQueue messageQueue,
-        long queueOffset) {
-        this.sendStatus = sendStatus;
-        this.msgId = msgId;
-        this.offsetMsgId = offsetMsgId;
-        this.messageQueue = messageQueue;
-        this.queueOffset = queueOffset;
-    }
-
 1.进入MessageDecoder的decode方法
 
     ByteBuffer byteBufferMsgId = ByteBuffer.allocate(msgIDLength);
@@ -28,3 +16,19 @@ offsetMsgId的生成规则
     return UtilAll.bytes2string(input.array());
 
 ---
+
+赋值offsetMsgId
+
+1.进入MQClientAPIImpl的processSendResponse方法
+
+    SendResult sendResult = new SendResult(sendStatus, uniqMsgId, responseHeader.getMsgId(), messageQueue, responseHeader.getQueueOffset());
+    ↓
+    ↓
+    public SendResult(SendStatus sendStatus, String msgId, String offsetMsgId, MessageQueue messageQueue,
+        long queueOffset) {
+        this.sendStatus = sendStatus;
+        this.msgId = msgId;
+        this.offsetMsgId = offsetMsgId;
+        this.messageQueue = messageQueue;
+        this.queueOffset = queueOffset;
+    }
