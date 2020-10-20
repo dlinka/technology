@@ -57,6 +57,7 @@
     timeDiff = timeDiff / 1000;
     
     //index的位置
+    //源码可以看出来第一个位置空了出来
     int absIndexPos = IndexHeader.INDEX_HEADER_SIZE + this.hashSlotNum * hashSlotSize + this.indexHeader.getIndexCount() * indexSize;
     //存放hashcode
     this.mappedByteBuffer.putInt(absIndexPos, keyHash);
