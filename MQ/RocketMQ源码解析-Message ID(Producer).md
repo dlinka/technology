@@ -48,12 +48,12 @@ msgId的生成规则
 
 ---
 
-赋值msgId  
+赋值msgId和offsetMsgId  
 
 1.进入MQClientAPIImpl的processSendResponse方法
 
+    SendMessageResponseHeader responseHeader = (SendMessageResponseHeader) response.decodeCommandCustomHeader(SendMessageResponseHeader.class);
     String uniqMsgId = MessageClientIDSetter.getUniqID(msg);
-    ...
     SendResult sendResult = new SendResult(sendStatus, uniqMsgId, responseHeader.getMsgId(), messageQueue, responseHeader.getQueueOffset());
 
 ---
