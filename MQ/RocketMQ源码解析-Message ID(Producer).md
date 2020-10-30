@@ -35,7 +35,6 @@ msgId的生成规则
     FIX_STRING = UtilAll.bytes2string(tempBuffer.array());
     ↓
     ↓
-    //FIX_STRING包含ip、pid、ClassLoader
     ByteBuffer tempBuffer = ByteBuffer.allocate(ip.length + 2 + 4);
     tempBuffer.put(ip);
     tempBuffer.putShort((short) UtilAll.getPid());
@@ -44,7 +43,6 @@ msgId的生成规则
 4.进入MessageClientIDSetter的createUniqIDBuffer方法
 
     ByteBuffer buffer = ByteBuffer.allocate(4 + 2);
-    //buffer包含时间、计数器
     buffer.putInt((int) (System.currentTimeMillis() - startTime));
     buffer.putShort((short) COUNTER.getAndIncrement());
 
