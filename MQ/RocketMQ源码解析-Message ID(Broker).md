@@ -6,29 +6,14 @@ offsetMsgId的生成规则
 
 1.进入MessageDecoder的decode方法
 
+    int msgIDLength = storehostIPLength + 4 + 8;
     ByteBuffer byteBufferMsgId = ByteBuffer.allocate(msgIDLength);
     String msgId = createMessageId(byteBufferMsgId, msgExt.getStoreHostBytes(), msgExt.getCommitLogOffset());
     ↓
     ↓
-    //msgId包含地址和偏移量
+    //msgId生成因子包含地址和偏移量
     input.put(addr);
     input.putLong(offset);
     return UtilAll.bytes2string(input.array());
 
 ---
-
-赋值offsetMsgId
-
-1.进入MQClientAPIImpl的processSendResponse方法
-
-    SendResult sendResult = new SendResult(sendStatus, uniqMsgId, responseHeader.getMsgId(), messageQueue, responseHeader.getQueueOffset());
-    ↓
-    ↓
-    public SendResult(SendStatus sendStatus, String msgId, String offsetMsgId, MessageQueue messageQueue,
-        long queueOffset) {
-        this.sendStatus = sendStatus;
-        this.msgId = msgId;
-        this.offsetMsgId = offsetMsgId;
-        this.messageQueue = messageQueue;
-        this.queueOffset = queueOffset;
-    }
