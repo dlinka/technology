@@ -37,7 +37,7 @@
     
 3.进入IndexFile的putKey方法
 
-    //hashcode
+    //计算key的hashcode
     int keyHash = indexKeyHashMethod(key);
     //对500万取余
     int slotPos = keyHash % this.hashSlotNum;
@@ -45,29 +45,26 @@
     int absSlotPos = IndexHeader.INDEX_HEADER_SIZE + slotPos * hashSlotSize;
     ...
     
-    //获取slot值
+    //slot值
     int slotValue = this.mappedByteBuffer.getInt(absSlotPos);
-    //slot值不存在就为0
-    if (slotValue <= invalidIndex || slotValue > this.indexHeader.getIndexCount()) {
-        slotValue = invalidIndex;
-    }
-    
+    ...
+    //时间差值
     long timeDiff = storeTimestamp - this.indexHeader.getBeginTimestamp();
     timeDiff = timeDiff / 1000;
-    
+    ...
     //index的位置
-    //源码可以看出来第一个位置空了出来
+    //this.indexHeader.getIndexCount()初始值是1,不明白为什么要把第一个位置空出来
     int absIndexPos = IndexHeader.INDEX_HEADER_SIZE + this.hashSlotNum * hashSlotSize + this.indexHeader.getIndexCount() * indexSize;
     //存放hashcode
-    this.mappedByteBuffer.putInt(absIndexPos, keyHash);
     //存放偏移量
-    this.mappedByteBuffer.putLong(absIndexPos + 4, phyOffset);
     //存放时间差
-    this.mappedByteBuffer.putInt(absIndexPos + 4 + 8, (int) timeDiff);
     //存放前一个index的位置,第一个存放0
+    this.mappedByteBuffer.putInt(absIndexPos, keyHash);
+    this.mappedByteBuffer.putLong(absIndexPos + 4, phyOffset);
+    this.mappedByteBuffer.putInt(absIndexPos + 4 + 8, (int) timeDiff);
     this.mappedByteBuffer.putInt(absIndexPos + 4 + 8 + 4, slotValue);
     
-    //solt存放当前index的数量
+    //solt中存放命中这个槽的index数量
     this.mappedByteBuffer.putInt(absSlotPos, this.indexHeader.getIndexCount());
     
     //如果是第一个写入Header
