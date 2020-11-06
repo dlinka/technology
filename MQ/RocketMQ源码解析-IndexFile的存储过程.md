@@ -64,7 +64,7 @@
     this.mappedByteBuffer.putInt(absIndexPos + 4 + 8, (int) timeDiff);
     this.mappedByteBuffer.putInt(absIndexPos + 4 + 8 + 4, slotValue);
     
-    //solt中存放命中这个槽的index数量
+    //solt中存放当前indexCount的数量
     this.mappedByteBuffer.putInt(absSlotPos, this.indexHeader.getIndexCount());
     
     //如果是第一个写入Header
