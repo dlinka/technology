@@ -12,7 +12,6 @@
     DefaultMessageStore.this.indexService.buildIndex(request);
     ↓
     ↓
-    //进入IndexService的buildIndex方法
     //UNIQ_KEY写入IndexFile
     if (req.getUniqKey() != null) {
         //生成因子加入Topic
