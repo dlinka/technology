@@ -1,16 +1,3 @@
-Demo
-
-    DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(CONSUMER_GROUP);
-    consumer.setNamesrvAddr("localhost:9876");
-    consumer.subscribe(TOPIC, "*");
-    consumer.registerMessageListener(new MessageListenerConcurrently() {
-        @Override
-        public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> msgs, ConsumeConcurrentlyContext context) {
-            return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
-        }
-    });
-    consumer.start();
-    
 1.DefaultMQPushConsumer#start
 
     this.defaultMQPushConsumerImpl.start();
@@ -18,7 +5,6 @@ Demo
     ↓
     case CREATE_JUST:
         else if (this.getMessageListenerInner() instanceof MessageListenerConcurrently) {
-            //消费消息
             this.consumeMessageService = new ConsumeMessageConcurrentlyService(this, (MessageListenerConcurrently) this.getMessageListenerInner());
         }
         ...
