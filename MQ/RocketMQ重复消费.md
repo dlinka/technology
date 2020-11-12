@@ -25,6 +25,17 @@ Demo
     
 背景
 
-    生产者发送200个消息
+    DefaultMQPushConsumerImpl#pullMessage
+         case FOUND:
+         //这一行开启断点
+         long prevRequestOffset = pullRequest.getNextOffset();
     开启4个消费者
+    生产者发送200个消息
+    把第1个消费者的断点过掉,让2,3,4卡主
+    接下来会看到第1个消费者会消费掉所有的消息,2、3、4会打印1消费过的消息
+    
+
+    
+
+
     
