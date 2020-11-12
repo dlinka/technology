@@ -23,7 +23,7 @@ Demo
     });
     consumer.start();
     
-背景
+实验
 
     DefaultMQPushConsumerImpl#pullMessage
          case FOUND:
@@ -34,7 +34,12 @@ Demo
     把第1个消费者的断点过掉,让2,3,4卡主
     接下来会看到第1个消费者会消费掉所有的消息,2、3、4会打印1消费过的消息
     
+![image](https://user-images.githubusercontent.com/4274041/98972760-d5867380-254d-11eb-9af9-2634c1bcc068.png)
 
+结论
+
+    如果消费者长时间没有返回ACK
+    broker会把消息发给其他消费者
     
 
 
