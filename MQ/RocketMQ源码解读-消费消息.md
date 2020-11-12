@@ -72,7 +72,15 @@
     ↓
     ↓
     case FOUND:
-        DefaultMQPushConsumerImpl.this.consumeMessageService.submitConsumeRequest(pullResult.getMsgFoundList(), processQueue, pullRequest.getMessageQueue(), dispatchToConsume);
+        else {
+            DefaultMQPushConsumerImpl.this.consumeMessageService.submitConsumeRequest(pullResult.getMsgFoundList(), processQueue, pullRequest.getMessageQueue(), dispatchToConsume);
+            //间隔多场时间再次拉取消息
+            if (DefaultMQPushConsumerImpl.this.defaultMQPushConsumer.getPullInterval() > 0) {
+                DefaultMQPushConsumerImpl.this.executePullRequestLater(pullRequest, DefaultMQPushConsumerImpl.this.defaultMQPushConsumer.getPullInterval());
+            } else {
+                DefaultMQPushConsumerImpl.this.executePullRequestImmediately(pullRequest);
+            }
+        }
     ↓
     ↓
     //一次处理多少消息
