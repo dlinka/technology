@@ -26,9 +26,9 @@ Demo
     ↓
     ↓
     this.pullMessageService.start();
-
-2.PullMessageService#run
-
+    ↓
+    ↓
+    //PullMessageService#run
     this.pullMessage(pullRequest);
     ↓
     ↓
