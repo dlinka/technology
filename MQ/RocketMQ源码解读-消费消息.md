@@ -4,6 +4,7 @@
     ↓
     ↓
     case CREATE_JUST:
+        //消费消息
         else if (this.getMessageListenerInner() instanceof MessageListenerConcurrently) {
             this.consumeMessageService = new ConsumeMessageConcurrentlyService(this, (MessageListenerConcurrently) this.getMessageListenerInner());
         }
@@ -11,10 +12,13 @@
         mQClientFactory.start();
     ↓
     ↓
+    //开启拉取消息线程
     this.pullMessageService.start();
     ↓
     ↓
     //PullMessageService#run
+    //pullRequestQueue是一个阻塞队列
+    PullRequest pullRequest = this.pullRequestQueue.take();
     this.pullMessage(pullRequest);
     ↓
     ↓
@@ -22,16 +26,10 @@
     impl.pullMessage(pullRequest);
     ↓
     ↓
+    //拉取后的回调处理
     PullCallback pullCallback = new PullCallback() {
         @Override
         public void onSuccess(PullResult pullResult) {
-            case FOUND:
-                //消费消息
-                DefaultMQPushConsumerImpl.this.consumeMessageService.submitConsumeRequest(
-                                    pullResult.getMsgFoundList(),
-                                    processQueue,
-                                    pullRequest.getMessageQueue(),
-                                    dispatchToConsume);
         }
     };
     ...
@@ -63,6 +61,18 @@
         this.pullMessageAsync(addr, request, timeoutMillis, pullCallback);
     ↓
     ↓
-    pullCallback.onSuccess(pullResult);
+    this.remotingClient.invokeAsync(addr, request, timeoutMillis, new InvokeCallback() {
+        @Override
+        public void operationComplete(ResponseFuture responseFuture) {
+            PullResult pullResult = MQClientAPIImpl.this.processPullResponse(response);
+            //调用上面的回调处理
+            pullCallback.onSuccess(pullResult);
+        }
+    });
+    ↓
+    ↓
+    case FOUND:
+        DefaultMQPushConsumerImpl.this.consumeMessageService.submitConsumeRequest(pullResult.getMsgFoundList(), processQueue, pullRequest.getMessageQueue(), dispatchToConsume);
+    
     
 ---
