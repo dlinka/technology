@@ -73,6 +73,27 @@
     ↓
     case FOUND:
         DefaultMQPushConsumerImpl.this.consumeMessageService.submitConsumeRequest(pullResult.getMsgFoundList(), processQueue, pullRequest.getMessageQueue(), dispatchToConsume);
-    
-    
+    ↓
+    ↓
+    //一次处理多少消息
+    final int consumeBatchSize = this.defaultMQPushConsumer.getConsumeMessageBatchMaxSize();
+    if (msgs.size() <= consumeBatchSize) {
+        //直接提交线程池
+        this.consumeExecutor.submit(consumeRequest);
+    } else {
+        //分批提交线程池
+        for (int total = 0; total < msgs.size(); ) {
+            List<MessageExt> msgThis = new ArrayList<MessageExt>(consumeBatchSize);
+            for (int i = 0; i < consumeBatchSize; i++, total++) {
+                if (total < msgs.size()) {
+                    msgThis.add(msgs.get(total));
+                } else {
+                    break;
+                }
+            }
+            ConsumeRequest consumeRequest = new ConsumeRequest(msgThis, processQueue, messageQueue);
+            this.consumeExecutor.submit(consumeRequest);
+        }
+    }    
+
 ---
