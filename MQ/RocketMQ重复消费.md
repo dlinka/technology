@@ -34,13 +34,14 @@ Demo
     把第1个消费者的断点过掉,让2,3,4卡主
     接下来会看到第1个消费者会消费掉所有的消息,2、3、4会打印1消费过的消息
     
-![image](https://user-images.githubusercontent.com/4274041/98972760-d5867380-254d-11eb-9af9-2634c1bcc068.png)
+![image](https://user-images.githubusercontent.com/4274041/99024293-39865780-25a1-11eb-8e44-dc363fc7f8c4.png)
+![image](https://user-images.githubusercontent.com/4274041/99024334-53279f00-25a1-11eb-8ad6-307ab885c9ad.png)
+![image](https://user-images.githubusercontent.com/4274041/99024350-6470ab80-25a1-11eb-9af3-d3d689373c11.png)
+![image](https://user-images.githubusercontent.com/4274041/99024387-781c1200-25a1-11eb-9af7-939dd1b8489c.png)
 
 结论
 
     如果消费者长时间没有返回ACK
-    broker会把消息发给其他消费者
-    
+    其他消费者会重复消费这个消息
 
-
-    
+---
