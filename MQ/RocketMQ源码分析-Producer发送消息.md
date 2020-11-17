@@ -77,5 +77,10 @@
     request = RemotingCommand.createRequestCommand(msg instanceof MessageBatch ? RequestCode.SEND_BATCH_MESSAGE : RequestCode.SEND_MESSAGE_V2, requestHeaderV2);
     ...
     return this.sendMessageSync(addr, brokerName, msg, timeoutMillis - costTimeSync, request);
+    ↓
+    ↓
+    //发送请求
+    RemotingCommand response = this.remotingClient.invokeSync(addr, request, timeoutMillis);
+    return this.processSendResponse(brokerName, msg, response);
 
 ---
