@@ -46,7 +46,7 @@
     ↓
     int index = this.sendWhichQueue.getAndIncrement();
     int pos = Math.abs(index) % this.messageQueueList.size();
-    //选择第二步中创建的MessageQueue
+    //负载均衡选择第二步中创建的MessageQueue
     return this.messageQueueList.get(pos);
     
 4.DefaultMQProducerImpl#sendKernelImpl
@@ -73,9 +73,9 @@
     return sendMessage(addr, brokerName, msg, requestHeader, timeoutMillis, communicationMode, null, null, null, 0, context, producer);
     ↓
     ↓
-    
-    
-    
-    
-    
-    
+    SendMessageRequestHeaderV2 requestHeaderV2 = SendMessageRequestHeaderV2.createSendMessageRequestHeaderV2(requestHeader);
+    request = RemotingCommand.createRequestCommand(msg instanceof MessageBatch ? RequestCode.SEND_BATCH_MESSAGE : RequestCode.SEND_MESSAGE_V2, requestHeaderV2);
+    ...
+    return this.sendMessageSync(addr, brokerName, msg, timeoutMillis - costTimeSync, request);
+
+---
