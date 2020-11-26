@@ -6,6 +6,7 @@
 
     Find in Path... //cmd+shift+f
     Delete Line //cmd+delete
+    serialVersionUID //光标先选中类,然后按option+enter
     
 ---
 
