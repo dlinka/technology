@@ -9,4 +9,13 @@ exceptionally
     future.exceptionally((ex) -> {
         return 20;
     });
+    ↓
+    ↓
+    CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> {
+        int throwException = 12 / 0;
+        return 10;
+    }).exceptionally((ex) -> {
+        return 20;
+    });
+    
     
