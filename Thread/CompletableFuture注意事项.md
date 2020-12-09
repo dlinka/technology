@@ -58,7 +58,7 @@ theCompose的使用场景
     static CompletableFuture<String> compose2(Integer i) {
         return CompletableFuture.supplyAsync(() -> "a " + i);
     }
-    //使用thenApply返回值没有使用thenCompose友好
+    //使用thenApply方法返回值没有使用thenCompose方法返回值友好
     CompletableFuture<CompletableFuture<String>> future = compose1().thenApply(i -> compose2(i));
     CompletableFuture<String> future = compose1().thenCompose(i -> compose2(i));
 
