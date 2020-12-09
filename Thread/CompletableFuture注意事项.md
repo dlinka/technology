@@ -21,9 +21,10 @@
 线程调用不确定可能导致线程阻塞
 
     CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
+        //ForkJoinPool.commonPool-worker-1
         System.out.println(Thread.currentThread().getName());
-        //开启这段代码,thenApply打印:ForkJoinPool.commonPool-worker-1
-        //关闭这段代码,thenApply打印:main
+        //开启这段代码,thenApply中打印:ForkJoinPool.commonPool-worker-1
+        //关闭这段代码,thenApply中打印:main
         try {
             TimeUnit.SECONDS.sleep(0);
         } catch (InterruptedException e) {
@@ -36,10 +37,7 @@
     });
     ↓
     ↓
-    CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
-        System.out.println(Thread.currentThread().getName());
-        return 0;
-    }).thenApply((i) -> {
+    CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> 0).thenApply((i) -> {
         try {
             TimeUnit.SECONDS.sleep(1000);
         } catch (InterruptedException e) {
@@ -51,8 +49,7 @@
     System.out.println("main running");
     ↓
     ↓
-    //
-
+    //强制使用多线程执行
     CompletableFuture<Integer> future1 = CompletableFuture.supplyAsync(() -> 0);
     CompletableFuture<String> future2 = future1.thenCompose(i -> CompletableFuture.supplyAsync(() -> "a" + 1));
     System.out.println(future2.get());
