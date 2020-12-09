@@ -1,4 +1,4 @@
-exceptionally
+使用exceptionally方法的注意事项
 
     CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> {
         int throwException = 12 / 0;
@@ -18,12 +18,12 @@ exceptionally
         return 20;
     });
     
-thenApply
+线程调用不确定可能导致线程阻塞
 
     CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
         System.out.println(Thread.currentThread().getName());
-        //开启这段代码,下面thenApply打印:ForkJoinPool.commonPool-worker-1
-        //关闭这段代码,下面thenApply打印:main
+        //开启这段代码,thenApply打印:ForkJoinPool.commonPool-worker-1
+        //关闭这段代码,thenApply打印:main
         try {
             TimeUnit.SECONDS.sleep(0);
         } catch (InterruptedException e) {
@@ -34,5 +34,27 @@ thenApply
         System.out.println(Thread.currentThread().getName());
         return "a";
     });
+    ↓
+    ↓
+    CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
+        System.out.println(Thread.currentThread().getName());
+        return 0;
+    }).thenApply((i) -> {
+        try {
+            TimeUnit.SECONDS.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "a";
+    });
+    //main线程会被阻塞
+    System.out.println("main running");
+    ↓
+    ↓
+    //
+
+    CompletableFuture<Integer> future1 = CompletableFuture.supplyAsync(() -> 0);
+    CompletableFuture<String> future2 = future1.thenCompose(i -> CompletableFuture.supplyAsync(() -> "a" + 1));
+    System.out.println(future2.get());
     
 ---
