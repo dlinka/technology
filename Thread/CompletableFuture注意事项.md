@@ -33,25 +33,33 @@
         return 0;
     }).thenApply((i) -> {
         System.out.println(Thread.currentThread().getName());
-        return "a";
+        return "a" + i;
     });
     ↓
     ↓
+    //main线程被阻塞的情况
     CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> 0).thenApply((i) -> {
         try {
             TimeUnit.SECONDS.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return "a";
+        return "a" + i;
     });
-    //main线程会被阻塞
     System.out.println("main running");
-    ↓
-    ↓
-    //强制使用多线程执行
-    CompletableFuture<Integer> future1 = CompletableFuture.supplyAsync(() -> 0);
-    CompletableFuture<String> future2 = future1.thenCompose(i -> CompletableFuture.supplyAsync(() -> "a" + 1));
-    System.out.println(future2.get());
+
+theCompose的使用场景
+
+    //依赖前一个任务结果再去进行计算可以使用thenApply,为什么还会有thenCompose?
     
+    static CompletableFuture<Integer> compose1() {
+        return CompletableFuture.supplyAsync(() -> 0);
+    }
+    static CompletableFuture<String> compose2(Integer i) {
+        return CompletableFuture.supplyAsync(() -> "a " + i);
+    }
+    //使用thenApply返回值没有使用thenCompose友好
+    CompletableFuture<CompletableFuture<String>> future = compose1().thenApply(i -> compose2(i));
+    CompletableFuture<String> future = compose1().thenCompose(i -> compose2(i));
+
 ---
