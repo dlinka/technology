@@ -18,4 +18,21 @@ exceptionally
         return 20;
     });
     
+thenApply
+
+    CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
+        System.out.println(Thread.currentThread().getName());
+        //开启这段代码,下面thenApply打印:ForkJoinPool.commonPool-worker-1
+        //关闭这段代码,下面thenApply打印:main
+        try {
+            TimeUnit.SECONDS.sleep(0);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }).thenApply((i) -> {
+        System.out.println(Thread.currentThread().getName());
+        return "a";
+    });
     
+---
