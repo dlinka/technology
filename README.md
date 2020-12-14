@@ -8,6 +8,7 @@
 
 * [Java新特性](https://github.com/dlinka/technology/blob/master/Java/%E6%96%B0%E7%89%B9%E6%80%A7.md)
 * [Java代码规范](https://github.com/dlinka/technology/blob/master/Java/Java%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83.md)
+* [Java泛型(数组为什么不支持泛型、擦除并不总是Object、通配符证明等知识)](https://github.com/dlinka/technology/blob/master/Java/%E6%B3%9B%E5%9E%8B.md)
 
 😃DB
 
