@@ -1,16 +1,18 @@
 示例
 
-    File file = new File("test.txt");
-    FileChannel channel = new RandomAccessFile(file, "rw").getChannel();
-    MappedByteBuffer mappedByteBuffer = channel.map(FileChannel.MapMode.READ_WRITE, 0, 1000);
-    for (int i = 0; i < 1000; i++){
-        mappedByteBuffer.put((byte)i);
-    }
-    mappedByteBuffer.position(0);
-    for (int i = 0; i < 1000; i++){
-        System.out.println(mappedByteBuffer.get());
-    }
-    
+```java
+File file = new File("test.txt");
+FileChannel channel = new RandomAccessFile(file, "rw").getChannel();
+MappedByteBuffer mappedByteBuffer = channel.map(FileChannel.MapMode.READ_WRITE, 0, 1000);
+for (int i = 0; i < 1000; i++){
+    mappedByteBuffer.put((byte)i);
+}
+mappedByteBuffer.position(0);
+for (int i = 0; i < 1000; i++){
+    System.out.println(mappedByteBuffer.get());
+}
+```
+
 1.进入FileChannelImpl#map
 
     try {
@@ -42,5 +44,5 @@
             initDBBRConstructor();
         //利用java.nio.DirectByteBuffer的构造函数初始化
         dbb = (MappedByteBuffer)directByteBufferRConstructor.newInstance(new Object[] { new Integer(size), new Long(addr), fd, unmapper });
-        
+
 ---
