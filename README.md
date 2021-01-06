@@ -47,7 +47,7 @@
 * [RocketMQ源码解析-Message ID(Produer)](https://github.com/dlinka/technology/blob/master/MQ/RocketMQ%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90-Message%20ID(Producer).md)
 * [RocketMQ源码解析-IndexFile的存储过程](https://github.com/dlinka/technology/blob/master/MQ/RocketMQ%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90-IndexFile%E7%9A%84%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B.md)
 * [RocketMQ源码解析-发送消息](https://github.com/dlinka/technology/blob/master/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/RocketMQ/RocketMQ%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-%E5%8F%91%E9%80%81%E6%B6%88%E6%81%AF.md)
-* [RocketMQ源码解析-消息存储](./消息队列/RocketMQ源码解析-消息存储.md)
+* [RocketMQ源码解析-消息存储](./消息队列/RocketMQ/RocketMQ源码解析-消息存储.md)
 
 😣Maven
 
