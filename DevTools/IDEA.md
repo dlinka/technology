@@ -1,16 +1,16 @@
-serialVersionUID
+##### serialVersionUID
 
-开启Inspections
+选中Inspections->Java->Serialization issues->Serializable class without 'serialVersionUID'
 
-![image](https://user-images.githubusercontent.com/4274041/100405287-44abae00-309e-11eb-83dc-dad696e767d0.png)
+<img src="https://user-images.githubusercontent.com/4274041/100405287-44abae00-309e-11eb-83dc-dad696e767d0.png" alt="image" style="zoom:50%;" />
 
-光标先选中类,按option+enter
+alt+enter
 
-![image](https://user-images.githubusercontent.com/4274041/100405508-b71c8e00-309e-11eb-82aa-816ec3c79e85.png)
-    
+<img src="https://user-images.githubusercontent.com/4274041/100405508-b71c8e00-309e-11eb-82aa-816ec3c79e85.png" alt="image" style="zoom:50%;" />
+
 ---
 
-快捷键
+##### 快捷键
 
 ![image](https://user-images.githubusercontent.com/4274041/90311487-df3c1300-df2d-11ea-86e0-3505733d28ad.png)
 
