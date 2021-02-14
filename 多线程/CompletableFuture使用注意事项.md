@@ -1,25 +1,3 @@
-##### 执行顺序按照调用顺序
-
-```java
-//whenComplete执行会在exceptionally前执行
-CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> {
-    int i = 2 / 0;
-    return 1;
-}).whenComplete((i, ex) -> {
-    System.out.println("whenComplete entry");
-    System.out.println("i : " + i);
-    System.out.println("ex : " + ex);
-    System.out.println("whenComplete exit");
-}).exceptionally((ex) -> {
-    System.out.println("exceptionally entry");
-    System.out.println("ex : " + ex);
-    System.out.println("exceptionally exit");
-    return 20;
-});
-```
-
-
-
 ##### 返回值不可变
 
 ```java
@@ -44,13 +22,6 @@ CompletableFuture<LocalDate> future = CompletableFuture.supplyAsync(()->{
 
 
 ##### join方法
-
-```java
-join和get都是阻塞获取值
-join不需要手动抛出异常
-get需要手动抛出异常
-  ExecutionException, InterruptedException
-```
 
 
 
@@ -104,9 +75,7 @@ CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> {
 
 
 
-##### 线程执行的不确定性
-
-thenApply使用同一个线程执行
+### 线程执行的不确定性
 
 ```java
 CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
@@ -115,46 +84,27 @@ CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
     try {
         TimeUnit.SECONDS.sleep(0);
     } catch (InterruptedException e) {
-        e.printStackTrace();
     }
     return 0;
 }).thenApply((i) -> {
-    //ForkJoinPool.commonPool-worker-1
+    //下面打印ForkJoinPool.commonPool-worker-1或者main
     System.out.println(Thread.currentThread().getName());
-    return "a" + i;
+    return "a";
 });
 ```
-
-thenApply使用main线程执行
-
-```java
-CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
-    //ForkJoinPool.commonPool-worker-1
-    System.out.println(Thread.currentThread().getName());
-    return 0;
-}).thenApply((i) -> {
-    //main
-    System.out.println(Thread.currentThread().getName());
-    return "a" + i;
-});
-```
-
-main线程被阻塞
 
 ```java
 CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> 0).thenApply((i) -> {
     try {
-        TimeUnit.SECONDS.sleep(1000);
+        TimeUnit.SECONDS.sleep(10000);
     } catch (InterruptedException e) {
-        e.printStackTrace();
     }
     return "a";
 });
+//main线程被阻塞
 //这里不会立即被打印
-System.out.println("main running");
+System.out.println("main");
 ```
-
-
 
 ##### theCompose方法
 
