@@ -1,58 +1,57 @@
-##### exceptionally调用注意事项
+### exceptionally调用注意事项
 
 ```java
-CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> {
+CompletableFuture<Integer> cf = CompletableFuture.supplyAsync(() -> {
     int i = 12 / 0;
     return 1;
 });
-//下面这段代码执行的时候前面的异常已经抛出了
-future.exceptionally((ex) -> {
+//这段代码执行的时候前面的异常已经抛出了
+cf.exceptionally((ex) -> {
     return 2;
 });
 ↓
 ↓
-CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> {
-    int throwException = 12 / 0;
+CompletableFuture<Integer> cf = CompletableFuture.supplyAsync(() -> {
+    int i = 12 / 0;
     return 1;
-}).exceptionally((ex) -> {
+}).exceptionally(ex -> {
     return 2;
 });
 ```
 
-
-
 ### 线程执行的不确定性
 
 ```java
-CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
+CompletableFuture<Integer> cf = CompletableFuture.supplyAsync(() -> {
     //ForkJoinPool.commonPool-worker-1
     System.out.println(Thread.currentThread().getName());
     try {
         TimeUnit.SECONDS.sleep(0);
     } catch (InterruptedException e) {
     }
-    return 0;
-}).thenApply((i) -> {
-    //下面打印ForkJoinPool.commonPool-worker-1或者main
+    return 1;
+}).thenApply(i -> {
+    //打印ForkJoinPool.commonPool-worker-1或者main
     System.out.println(Thread.currentThread().getName());
-    return "a";
+    return 2;
 });
 ```
 
 ```java
-CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> 0).thenApply((i) -> {
+CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> 1).thenApply(i -> {
     try {
-        TimeUnit.SECONDS.sleep(10000);
+        TimeUnit.SECONDS.sleep(1000);
     } catch (InterruptedException e) {
     }
-    return "a";
+    return 2;
 });
 //main线程被阻塞
-//这里不会立即被打印
 System.out.println("main");
 ```
 
-##### theCompose方法
+
+
+### thenCompose方法
 
 ```java
 //依赖前一个任务结果再去进行计算可以使用thenApply,为什么还会有thenCompose?
