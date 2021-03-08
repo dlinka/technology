@@ -7,16 +7,11 @@ org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfig
 2.SecurityFilterAutoConfiguration
 
 ```java
-@EnableConfigurationProperties(SecurityProperties.class)
-//指定在SecurityAutoConfiguration配置之后
-@AutoConfigureAfter(SecurityAutoConfiguration.class)
 public class SecurityFilterAutoConfiguration {
-  //这个Bean是用来注册Filter到ServletContext中
 	@Bean
-	@ConditionalOnBean(name = DEFAULT_FILTER_NAME)
 	public DelegatingFilterProxyRegistrationBean securityFilterChainRegistration(SecurityProperties securityProperties) {
-		DelegatingFilterProxyRegistrationBean registration = new DelegatingFilterProxyRegistrationBean(DEFAULT_FILTER_NAME);
-    ...
+		//将springSecurityFilterChain包装成Filter注入ServletContext中
+    DelegatingFilterProxyRegistrationBean registration = new DelegatingFilterProxyRegistrationBean("springSecurityFilterChain");
 		return registration;
 	}
 }
@@ -30,9 +25,9 @@ DelegatingFilterProxyRegistrationBean的继承关系
 
 1.RegistrationBean#onStartup
 
-由于DelegatingFilterProxyRegistrationgBean父类RegistrationBean实现了ServletContextInitializer接口
+**DelegatingFilterProxyRegistrationgBean父类RegistrationBean实现了ServletContextInitializer接口**
 
-容器启动的时候会调用ServletContextInitializer实现类的onStartup方法
+**容器启动的时候会调用ServletContextInitializer实现类的onStartup方法**
 
 ```java
 register(description, servletContext);
@@ -48,7 +43,7 @@ D registration = addRegistration(description, servletContext);
 
 ```java
 Filter filter = getFilter();
-//这里就会把Filter注入到ServletContext中
+//Filter注入到ServletContext中
 return servletContext.addFilter(getOrDeduceName(filter), filter);
 ```
 
@@ -56,12 +51,10 @@ return servletContext.addFilter(getOrDeduceName(filter), filter);
 
 ```java
 //DelegatingFilterProxy是一个Filter
-//DelegatingFilterProxy本质是一个代理类,代理名为springSecurityFilterChain的Bean
+//DelegatingFilterProxy本质是一个代理类,代理名springSecurityFilterChain
 return new DelegatingFilterProxy(this.targetBeanName, getWebApplicationContext()) {
-	@Override
-	protected void initFilterBean() throws ServletException {
-		// Don't initialize filter bean on init()
-	}
+		@Override
+		protected void initFilterBean() throws ServletException {}
 };
 ```
 

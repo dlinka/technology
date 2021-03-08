@@ -7,69 +7,75 @@ org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguratio
 2.SecurityAutoConfiguration
 
 ```java
-//仅在DefaultAuthenticationEventPublisher存在于classpath上时才进行配置
-@ConditionalOnClass(DefaultAuthenticationEventPublisher.class)
 @EnableConfigurationProperties(SecurityProperties.class)
 @Import({ 
 	SpringBootWebSecurityConfiguration.class, //3
 	WebSecurityEnablerConfiguration.class, //4
 	SecurityDataConfiguration.class
 })
-public class SecurityAutoConfiguration {
-}
+public class SecurityAutoConfiguration {}
 ```
 
 3.SpringBootWebSecurityConfiguration
 
+**如果没有自定义配置类,这个类为其提供一个默认的配置类**
+
+**自定义的配置类需要继承WebSecurityConfigurerAdapter**
+
 ```java
 @ConditionalOnClass(WebSecurityConfigurerAdapter.class)
-//如果没有自定义配置类,这个类就会为其提供一个默认的配置类
-//所以自定义的配置类需要继承WebSecurityConfigurerAdapter
 @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
 public class SpringBootWebSecurityConfiguration {
 	@Configuration(proxyBeanMethods = false)
-	@Order(SecurityProperties.BASIC_AUTH_ORDER)
-	static class DefaultConfigurerAdapter extends WebSecurityConfigurerAdapter { 
-  }
+	static class DefaultConfigurerAdapter extends WebSecurityConfigurerAdapter {}
 }
 ```
 
 4.WebSecurityEnablerConfiguration
 
 ```java
-//仅存在类型为WebSecurityConfigurerAdapter的Bean才生效
 @ConditionalOnBean(WebSecurityConfigurerAdapter.class)
-//仅在名为springSecurityFilterChain的Bean不存在时才生效
-@ConditionalOnMissingBean(name = BeanIds.SPRING_SECURITY_FILTER_CHAIN)
-@EnableWebSecurity
-public class WebSecurityEnablerConfiguration {
-}
-↓
-↓
+@ConditionalOnMissingBean(name = "springSecurityFilterChain)
+@EnableWebSecurity //5
+public class WebSecurityEnablerConfiguration {}
+```
+
+5.EnableWebSecurity
+
+```java
 @Import({
-  WebSecurityConfiguration.class, //5
+  WebSecurityConfiguration.class, //6
 	SpringWebMvcImportSelector.class,
 	OAuth2ImportSelector.class
 })
-@EnableGlobalAuthentication //6
-public @interface EnableWebSecurity {
-}
+@EnableGlobalAuthentication //7
+public @interface EnableWebSecurity {}
 ```
 
-5.WebSecurityConfiguration
+6.WebSecurityConfiguration
 
 ```java
-//注入名为springSecurityFilterChain的Bean
-@Bean(name = AbstractSecurityWebApplicationInitializer.DEFAULT_FILTER_NAME)
-public Filter springSecurityFilterChain() throws Exception {
+public class WebSecurityConfiguration implements ImportAware, BeanClassLoaderAware {
+	//注入名为springSecurityFilterChain的Bean
+  @Bean(name = AbstractSecurityWebApplicationInitializer.DEFAULT_FILTER_NAME)
+  public Filter springSecurityFilterChain() throws Exception {}
 }
 ```
 
-6.EnableGlobalAuthentication
+7.EnableGlobalAuthentication
 
 ```java
 @Import(AuthenticationConfiguration.class)
-public @interface EnableGlobalAuthentication {
+public @interface EnableGlobalAuthentication {}
+```
+
+8.AuthenticationConfiguration
+
+```java
+public class AuthenticationConfiguration {
+	@Bean
+	public AuthenticationManagerBuilder authenticationManagerBuilder(
+    ObjectPostProcessor<Object> objectPostProcessor, ApplicationContext context) {}
 }
 ```
 
