@@ -11,7 +11,7 @@ public void method(Message message) {
 }
 ↓
 ↓
-//afterMessageSave
+//afterMessageSave方法
 Boolean lock = redisTemplate.opsForValue().setIfAbsent(lockKey, lockValue, DEFAULT_TTL_MINUTES, MINUTES);
 ```
 

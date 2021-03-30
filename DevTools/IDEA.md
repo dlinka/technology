@@ -1,3 +1,14 @@
+##### 复制粘贴失效
+
+```
+Preferences->Editor->General
+下拉右侧的滚动条
+找到Maximum number of contents to keep in clipboard
+修改这个对应的值,默认是5,修改成50
+```
+
+---
+
 ##### serialVersionUID
 
 选中Inspections->Java->Serialization issues->Serializable class without 'serialVersionUID'
