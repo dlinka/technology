@@ -27,7 +27,7 @@
             it.next();
         }
     使用fori遍历ArrayList最好
-
+    
     为什么上面结果会有超时的现象呢?
     进入LinkedList的源码,会发现node()方法中有导致执行大量的for循环
         return node(index).item;
@@ -58,5 +58,5 @@ remove()方法的比较
     
     为什么LinkedList会超时呢?
     查看源码发现remove()方法跟add()方法同样的逻辑,会执行大量的for循环
-    
----    
+
+---
