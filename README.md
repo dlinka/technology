@@ -1,5 +1,15 @@
 # 我的One Piece(持续更新)🐒🐒🐒
 
+🙄力扣
+
+- [按序打印](https://leetcode-cn.com/problemset/concurrency/)
+  1. [利用ReentrantLock和Condition实现(signal方法无限等待)]((https://leetcode-cn.com/problems/print-in-order/solution/li-yong-reentrantlockhe-conditionshi-xian-by-cr654/))
+- [交替打印FooBar](https://leetcode-cn.com/problems/print-foobar-alternately/)
+  1. [利用ReentrantLock和Condition实现](https://leetcode-cn.com/problems/print-foobar-alternately/solution/li-yong-reentrantlockhe-conditionshi-xian-by-cr6-2/)
+
+- [H2O 生成](https://leetcode-cn.com/problems/building-h2o/)
+  1. [利用ReentrantLock和Condition实现(位运算计算元素个数)](https://leetcode-cn.com/problems/building-h2o/solution/li-yong-reentrantlockhe-conditionshi-xian-wei-yun-/)
+
 😡Spring Boot
 
 * [Spring Boot源码解析-数据源的选择](https://github.com/dlinka/technology/blob/master/Spring%20Boot/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90-%E6%95%B0%E6%8D%AE%E6%BA%90%E7%9A%84%E9%80%89%E6%8B%A9.md)
