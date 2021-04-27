@@ -13,20 +13,16 @@
 
 我的必装插件
 
-    .ignore
-    Lombok
+```java
+.ignore
 
-    //括号根据颜色被区分
-    Rainbow Brackets
+Lombok
 
-     //可以让日志变色
-    Grep Console
+Rainbow Brackets //括号根据颜色被区分
 
-    //快速从mapper.xml跳转到代码
-    Free MyBatis plugin
-     
-    //可以查看完整SQL
-    //需要开启MyBatis的SQL打印
-    MyBatis Log Plugin
+Grep Console //日志变色
+
+Free MyBatis plugin //方法可以直接跳转到mapper.xml
+```
 
 ---

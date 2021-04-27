@@ -1,10 +1,15 @@
+##### 单元测试-Show Passed
+
+<img src="https://user-images.githubusercontent.com/4274041/116052288-0e557780-a6ac-11eb-9c9d-f46f5a716138.png" alt="image" style="zoom:50%;" />
+
+---
+
 ##### 复制粘贴失效
 
-```
+```java
 Preferences->Editor->General
-下拉右侧的滚动条
-找到Maximum number of contents to keep in clipboard
-修改这个对应的值,默认是5,修改成50
+下拉右侧的滚动条->Maximum number of contents to keep in clipboard
+默认是5,修改成50
 ```
 
 ---
