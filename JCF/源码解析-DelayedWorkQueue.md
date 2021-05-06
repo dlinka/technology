@@ -1,17 +1,18 @@
-```java
-这个队列在ScheduledThreadPool中定义,存储实现RunnableScheduledFuture接口的对象
-这个队列和DelayQueue差不多,底层都是使用堆排序-小顶堆,Leader-Flower线程模型等思想
+**核心概念**
 
-最核心的一个问题:为什么有DelayQueue还要DelayedWorkQueue?
-DelayQueue中如果要查找元素需要遍历整个队列,时间复杂度为O(n)
-DelayedWorkQueue优化了查找元素的效率,时间复杂度为O(1)
+```java
+队列在ScheduledThreadPool中定义
+存储实现RunnableScheduledFuture接口的对象
+这个队列核心思想和DelayQueue差不多,都是使用堆排序-小顶堆,Leader-Flower线程模型等思想
+
+为什么有DelayQueue还要DelayedWorkQueue?
+DelayQueue中如果要查找某个元素需要遍历整个队列,时间复杂度为O(n)
+DelayedWorkQueue则优化了查找某个元素的效率,时间复杂度为O(1)
 ```
 
 ---
 
-1.offer
-
-**代码的思路跟DelayQueue的offer方法一样,主要写一下不同点**
+**1.offer**
 
 ```java
 RunnableScheduledFuture<?> e = (RunnableScheduledFuture<?>)x;
@@ -53,9 +54,7 @@ queue[k] = key;
 setIndex(key, k);
 ```
 
-2.take
-
-**代码的思路跟DelayQueue的take方法一样,主要写一下不同点**
+**2.take**
 
 ```java
 final ReentrantLock lock = this.lock;
@@ -68,7 +67,7 @@ try {
         else {
             long delay = first.getDelay(NANOSECONDS);
             if (delay <= 0)
-                //跟DelayQueue的不同就是这里需要把元素在队列中的位置赋值为-1
+                //出队
                 return finishPoll(first);
             first = null;
             if (leader != null)
@@ -90,15 +89,17 @@ try {
         available.signal();
     lock.unlock();
 }
-↓
-↓
-//finishPoll
+```
+
+**2.1finishPoll**
+
+```java
 int s = --size;
 RunnableScheduledFuture<?> x = queue[s];
 queue[s] = null;
 if (s != 0)
     siftDown(0, x);
-//跟DelayQueue的不同就是这里需要把元素在队列中的位置赋值为-1
+//这里把元素在队列中的位置赋值为-1
 setIndex(f, -1);
 return f;
 ↓
@@ -114,7 +115,7 @@ while (k < half) {
     if (key.compareTo(c) <= 0)
         break;
     queue[k] = c;
-    //跟DelayQueue的不同就是这里会修改元素在队列中的位置
+    //跟DelayQueue的不同就是这里元素会记录在队列中的位置
     setIndex(c, k);
     k = child;
 }
@@ -123,14 +124,14 @@ queue[k] = key;
 setIndex(key, k);
 ```
 
-3.setIndex
+**3.setIndex**
 
 ```java
 if (f instanceof ScheduledFutureTask)
 	((ScheduledFutureTask)f).heapIndex = idx;
 ```
 
-4.indexOf
+**4.indexOf**
 
 ```java
 if (x instanceof ScheduledFutureTask) {
