@@ -1,4 +1,4 @@
-**state**
+**任务state**
 
 ```java
 0=NEW //任务未执行
@@ -12,7 +12,7 @@
 
 ---
 
-1.FutureTask的构造函数
+**1.FutureTask的构造函数**
 
 ```java
 this.callable = callable;
@@ -20,40 +20,40 @@ this.callable = callable;
 this.state = NEW;
 ```
 
-2.run方法
+**2.run方法**
 
 ```java
-//判断当前任务是否为未执行
-//将当前线程赋值给runner,注意这样就只会有一个线程执行下面的代码了
-if (state != NEW || !UNSAFE.compareAndSwapObject(this, runnerOffset, null, Thread.currentThread())) //1
+//当前线程赋值给runner属性,保证只有一个线程执行下面的代码
+if (state != NEW ||
+    !UNSAFE.compareAndSwapObject(this, runnerOffset, null, Thread.currentThread()))
 	return;
 try {
   Callable<V> c = callable;
   if (c != null && state == NEW) {
-  	V result;
-  	boolean ran;
   	try {
-    	result = c.call(); //执行任务
+      //执行任务
+    	result = c.call();
     	ran = true;
-		} catch (Throwable ex) {
-		}
+		} catch (Throwable ex) {}
 		if (ran)
-    	set(result); //保存结果
+      //保存结果
+    	set(result);
   }
 } finally {
   //runner必须在设置了state之后再置空
-  //如果不这样做就有可能有并发问题,因为都可能通过1处的代码
+  //如果不这样做,可能存在并发问题,另外一个线程通过方法开头的if判断
   runner = null;
-  //handlePossibleCancellationInterrupt做的事情是等任务状态变成INTERRUPTED
-  //线程池中一个线程执行到这里时,任务状态还是INTERRUPTING,假设现在方法直接结束了,这个线程去做下一个任务
-  //同时cancle方法中调用到t.interrupt(),这样就会导致终止下一个任务了
+  //假设线程池中一个线程执行到这里,任务状态此时是INTERRUPTING
+  //现在假设方法直接结束了,这个线程去做下一个任务,同时cancle方法这时调用到t.interrupt(),这样就会打断线程当前执行的任务
 	int s = state;
   if (s >= INTERRUPTING)
   	handlePossibleCancellationInterrupt(s);
 }
-↓
-↓
-//set方法
+```
+
+**2.1set**
+
+```java
 if (UNSAFE.compareAndSwapInt(this, stateOffset, NEW, COMPLETING)) {
   outcome = v;
   //此时对业务来讲只需要获取执行结果就可以了,不需要再关心state状态,所以使用putOrderedInt方法提高性能
@@ -62,7 +62,7 @@ if (UNSAFE.compareAndSwapInt(this, stateOffset, NEW, COMPLETING)) {
 }
 ```
 
-3.get
+**3.get**
 
 ```java
 int s = state;
@@ -105,7 +105,7 @@ for (;;) {
 }
 ```
 
-4.finishCompletion方法
+**4.finishCompletion方法**
 
 ```java
 for (WaitNode q; (q = waiters) != null;) {
@@ -133,7 +133,7 @@ for (WaitNode q; (q = waiters) != null;) {
 callable = null;
 ```
 
-5.cancel
+**5.cancel**
 
 ```java
 //任务未执行或者任务执行中

@@ -60,20 +60,34 @@ if (wc < corePoolSize)
 ```java
 //判断是否是周期性任务
 boolean periodic = isPeriodic();
-else if (!periodic)
-    ScheduledFutureTask.super.run();
-//是周期性任务
+//周期性任务
 else if (ScheduledFutureTask.super.runAndReset()) {
     //设置下一次任务的执行时间
-    setNextRunTime();
-    reExecutePeriodic(outerTask);
+    setNextRunTime(); //3.1
+    reExecutePeriodic(outerTask); //3.2
 }
-↓
-↓
-//进入reExecutePeriodic方法
+```
+
+**3.1setNextRunTime**
+
+```java
+long p = period;
+if (p > 0)
+	//下次运行时间 = 开始时间 + 间隔时间
+  time += p;
+else
+  //scheduleWithFixedDelay方法构造ScheduledFutureTask时会传入period为负数,所以这里写-p
+  //这里就会重新计算执行时间 = 返回当前时间 + 延迟时间
+  time = triggerTime(-p);
+```
+
+**3.2reExecutePeriodic**
+
+```java
 //重新加入队列
 super.getQueue().add(task);
 else
+    //上面2.2中有这个方法的解析
     ensurePrestart();
 ```
 
