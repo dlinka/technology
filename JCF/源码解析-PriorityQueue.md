@@ -1,20 +1,22 @@
-核心概念
+**核心概念**
 
 ```java
 底层使用数组存储元素
-增加元素的核心逻辑
+
+增加元素
   1.元素添加到末尾
   2.元素如果小于父节点,变换位置
-获取元素的核心逻辑
+
+获取元素
   1.返回数组中第一个元素
   2.最后一个元素与根节点的子节点中最小的那个节点比较,如果大于,交换位置
 ```
 
 ---
 
-1.offer方法
+**1.offer方法**
 
-add方法本质是调用offer
+**add方法本质是调用offer**
 
 ```java
 //通过这行代码知道PriorityQueue并不是线程安全的队列
@@ -35,7 +37,7 @@ return true;
 siftUpComparable(k, x); //1.1
 ```
 
-1.1.siftUpComparable方法
+**1.1.siftUpComparable方法**
 
 ```java
 Comparable<? super E> key = (Comparable<? super E>) x;
@@ -55,7 +57,7 @@ while (k > 0) {
 queue[k] = key;
 ```
 
-2.poll
+**2.poll**
 
 ```java
 //元素个数-1
@@ -74,7 +76,7 @@ return result;
 siftDownComparable(k, x);
 ```
 
-2.1siftDownComparable
+**2.1siftDownComparable**
 
 ```java
 int half = size >>> 1;
@@ -97,7 +99,7 @@ while (k < half) {
 queue[k] = key;
 ```
 
-3.remove(Object o)
+**3.remove(Object o)**
 
 ```java
 //循环遍历,找到第一个相等的节点,时间复杂度O(n)

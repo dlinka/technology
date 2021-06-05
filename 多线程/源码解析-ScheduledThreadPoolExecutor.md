@@ -1,9 +1,11 @@
 **核心概念**
 
 ```java
-阻塞队列DelayedWorkQueue(一个无界队列)
-阻塞队列中的元素类型是接口RunnableScheduledFuture,实现类为ScheduledFutureTask
+DelayedWorkQueue(一个无界阻塞队列)
+  队列中的元素类型是接口RunnableScheduledFuture,实现类为ScheduledFutureTask
 ```
+
+[源码解析-DelayedWorkQueue](../JCF/源码解析-DelayedWorkQueue.md)
 
 ---
 

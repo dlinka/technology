@@ -1,11 +1,14 @@
 **核心概念**
 
 ```java
-队列在ScheduledThreadPool中定义
-存储实现RunnableScheduledFuture接口的对象
-这个队列核心思想和DelayQueue差不多,都是使用堆排序-小顶堆,Leader-Flower线程模型等思想
+ScheduledThreadPool中定义,存储RunnableScheduledFuture接口的对象
+  
+这个队列核心思想和DelayQueue差不多,使用堆排序-小顶堆,Leader-Flower线程模型等思想,但是内部并没有使用PriorityQueue
+```
 
-为什么有DelayQueue还要DelayedWorkQueue?
+**为什么有DelayQueue还要DelayedWorkQueue?**
+
+```java
 DelayQueue中如果要查找某个元素需要遍历整个队列,时间复杂度为O(n)
 DelayedWorkQueue则优化了查找某个元素的效率,时间复杂度为O(1)
 ```
@@ -141,3 +144,4 @@ if (x instanceof ScheduledFutureTask) {
 }
 ```
 
+---
