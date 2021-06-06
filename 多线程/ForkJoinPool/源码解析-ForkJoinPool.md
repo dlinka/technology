@@ -9,12 +9,13 @@ WorkQueue
 **1.lockRunState**
 
 ```java
-//重写了下面的代码
 private int lockRunState() {
 	int rs = runState;
-  if((rs & 1) != 0){
+  //是否当前已经拿到锁了
+  if((rs & RSLOCK) != 0){
     return awaitRunStateLock();
   }
+  //没有拿到锁就上锁
   if(!U.compareAndSwapInt(this, RUNSTATE, rs, rs |= RSLOCK)){
     return awaitRunStateLock();
   }
@@ -27,5 +28,6 @@ private int lockRunState() {
 **2.externalSubmit**
 
 ```java
+
 ```
 

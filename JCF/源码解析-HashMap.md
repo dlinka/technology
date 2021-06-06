@@ -33,7 +33,9 @@ public static int highestOneBit(int i) {
     i |= (i >> 16);
     return i - (i >>> 1);
 }
-例如19,计算得到16
+↓
+↓
+//例如i=19,计算得到16
 0001 0011
 0000 1001 //i >> 1
 0001 1011 //i = i | (i >> 1)
@@ -41,7 +43,7 @@ public static int highestOneBit(int i) {
 0001 1111 //i = i | (i >> 2)
 ...
 0000 1111 //i >>> 1
-0001 0000 //i - (i >>> 1)
+0001 0000 //return i - (i >>> 1)
 ```
 
 3.hash方法
