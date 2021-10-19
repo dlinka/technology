@@ -1,5 +1,3 @@
-### elasticsearch-head
-
 #### 1.下载地址:https://github.com/mobz/elasticsearch-head
 
 需要node.js环境
@@ -26,8 +24,6 @@ npm run start
 #### 4.访问9100
 
 ![elasticserch-head-9100](/Users/dlinka/GitHub/technology/ELK/elasticsearch-head-9100.png)
-
-
 
 ---
 

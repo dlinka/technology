@@ -1,31 +1,61 @@
-1.BrokerStartup#main
+**1.BrokerStartup#main**
 
 ```java
-BrokerController brokerController = createBrokerController(args);
+start(createBrokerController(args));
 ↓
 ↓
-BrokerController controller = new BrokerController(brokerConfig, nettyServerConfig, nettyClientConfig, messageStoreConfig);
+final BrokerController controller = new BrokerController(brokerConfig, nettyServerConfig, nettyClientConfig, messageStoreConfig);
 boolean initResult = controller.initialize();
 ↓
 ↓
-messageStore = new DefaultMessageStore(messageStoreConfig, brokerStatsManager, messageArrivingListener, brokerConfig);
-↓
-↓
-//AllocateMappedFileService继承ServiceThread
-allocateMappedFileService = new AllocateMappedFileService(this);
-allocateMappedFileService.start();
+//DefaultMessageStore
+this.messageStore = new DefaultMessageStore(this.messageStoreConfig, this.brokerStatsManager, this.messageArrivingListener, this.brokerConfig); //2
+//Netty
+this.remotingServer = new NettyRemotingServer(this.nettyServerConfig, this.clientHousekeepingService);
+this.registerProcessor(); //3
 ```
 
-2.AllocateMappedFileService#run
+**2.DefaultMessageStore的构造方法**
 
 ```java
-while (!this.isStopped() && this.mmapOperation()) {}
+this.allocateMappedFileService = new AllocateMappedFileService(this);
+//CommitLog
+this.commitLog = new CommitLog(this); //2.1
+//AllocateMappedFileService继承ServiceThread
+this.allocateMappedFileService.start(); //2.2
+```
+
+**2.1.CommitLog的构造方法**
+
+```java
+//MappedFileQueue
+this.mappedFileQueue = new MappedFileQueue(defaultMessageStore.getMessageStoreConfig().getStorePathCommitLog(), defaultMessageStore.getMessageStoreConfig().getMappedFileSizeCommitLog(), defaultMessageStore.getAllocateMappedFileService());
 ↓
 ↓
+//MappedFile就是Commitlog文件
+private final CopyOnWriteArrayList<MappedFile> mappedFiles = new CopyOnWriteArrayList<MappedFile>();
+```
+
+
+
+
+
+
+
+
+
+**2.AllocateMappedFileService#run**
+
+```java
+while (!this.isStopped() && this.mmapOperation()) {
+
+}
+↓
+↓
+AllocateRequest req = null;
 try {
-  //这里是从优先级队列中获取文件创建请求
-  //优先级顺序根据文件名的大小
-  req = requestQueue.take();
+  //从优先级队列中获取文件创建请求,优先级顺序根据文件名的大小
+  req = this.requestQueue.take();
   AllocateRequest expectedRequest = requestTable.get(req.getFilePath());
 	//并发的情况下队列之中可能会有多个
   if (expectedRequest != req) {

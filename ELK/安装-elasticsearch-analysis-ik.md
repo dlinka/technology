@@ -1,22 +1,22 @@
-### ik分词器
-
 #### 1.下载地址:https://github.com/medcl/elasticsearch-analysis-ik/releases
 
 需要与Elasticsearch版本一致
 
-![ik-url](./ik-url.png)
-
-#### 2.解压到Elasticsearch的plugins目录
-
-![ik-file](./ik-file.png)
+#### 2.解压到elasticsearch的plugins目录
 
 #### 3.重启Elasticsearch
 
 ![ik-start](./ik-start.png)
 
-#### 4.Kibana中调试
+#### 4.查看插件
 
-##### ik_max_word
+```
+./elasticsearch-plugin list
+```
+
+#### 5.测试
+
+##### ik_max_word(细粒度)
 
 ```
 GET _analyze
@@ -28,7 +28,7 @@ GET _analyze
 
 ![ik-ik_max_word](./ik-ik_max_word.png)
 
-##### ik_smart
+##### ik_smart(粗粒度)
 
 ```
 GET _analyze
@@ -40,29 +40,21 @@ GET _analyze
 
 ![ik-ik_smart](./ik-ik_smart.png)
 
-#### 5.自定义词典
+#### 6.自定义词典
 
-##### 创建自定义词典:plugins/elasticsearch-analysis-ik-7.6.1/config/user.dic
+##### 创建自己的词典:plugins/elasticsearch-analysis-ik-7.6.1/config/custom.dic
 
 ```
-迪迦在东北
+
 ```
 
-##### 修改IKAnalyzer.cfg.xml
+##### 配置自己的扩展字典:IKAnalyzer.cfg.xml
 
 ```xml
-<entry key="ext_dict">user.dic</entry>
+<entry key="ext_dict">custom.dic</entry>
 ```
 
-![ik-user](./ik-user.png)
-
-
+##### 测试![ik-user](./ik-user.png)
 
 ---
-
-#### 查看插件
-
-```
-./elasticsearch-plugin list
-```
 
