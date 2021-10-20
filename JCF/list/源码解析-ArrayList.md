@@ -203,8 +203,8 @@ list.add(5);
 Thread thread1 = new Thread(() -> {
     Iterator<Integer> iterator = list.iterator();
     while (iterator.hasNext()) {
-        iterator.next();
-        Facility.sleep(100, TimeUnit.MILLISECONDS);
+        Facility.print("read - {}", iterator.next());
+        Facility.sleep(1);
     }
 });
 
@@ -212,7 +212,8 @@ Thread thread2 = new Thread(() -> {
     Iterator<Integer> iterator = list.iterator();
     while (iterator.hasNext()) {
         Integer integer = iterator.next();
-        if (integer == 2)
+        if (integer == 3)
+            Facility.print("remove - {}", integer);
             iterator.remove();
     }
 });
