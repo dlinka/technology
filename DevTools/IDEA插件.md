@@ -19,10 +19,9 @@
 Lombok
 
 Rainbow Brackets //括号根据颜色被区分
-
 Grep Console //日志变色
-
 Free MyBatis plugin //方法可以直接跳转到mapper.xml
+GenerateAllSetter //自动生成所有setter方法
 ```
 
 ---

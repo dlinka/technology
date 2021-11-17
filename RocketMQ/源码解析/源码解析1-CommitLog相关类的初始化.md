@@ -1,3 +1,45 @@
+### 关键类
+
+#### BrokerController
+
+```java
+public class BrokerController {
+		private MessageStore messageStore;
+    private RemotingServer remotingServer;
+    private RemotingServer fastRemotingServer;
+	  private ExecutorService sendMessageExecutor;
+}
+```
+
+#### DefaultMessageStore
+
+```java
+public class DefaultMessageStore implements MessageStore {
+		private final CommitLog commitLog;
+	  private final AllocateMappedFileService allocateMappedFileService;
+}
+```
+
+#### CommitLog
+
+```java
+public class CommitLog {
+		protected final MappedFileQueue mappedFileQueue;  
+    protected final PutMessageLock putMessageLock;
+}
+```
+
+#### MappedFileQueue
+
+```java
+public class MappedFileQueue {
+  	//MappedFile就是commitlog文件
+		private final CopyOnWriteArrayList<MappedFile> mappedFiles = new CopyOnWriteArrayList<>();
+}
+```
+
+---
+
 #### 1.BrokerStartup#main
 
 ```java
@@ -7,8 +49,13 @@ public static void main(String[] args) {
 ↓
 ↓
 public static BrokerController createBrokerController(String[] args) {
-  	final BrokerController controller = new BrokerController(brokerConfig, nettyServerConfig, nettyClientConfig, messageStoreConfig);
-		boolean initResult = controller.initialize(); //2
+  	final BrokerController controller = new BrokerController(
+        brokerConfig,
+        nettyServerConfig,
+        nettyClientConfig,
+        messageStoreConfig);
+		controller.initialize(); //2
+  	return controller;
 }
 ```
 
@@ -16,21 +63,21 @@ public static BrokerController createBrokerController(String[] args) {
 
 ```java
 public boolean initialize() throws CloneNotSupportedException {
-    //DefaultMessageStore
+    //创建DefaultMessageStore
     this.messageStore = new DefaultMessageStore(this.messageStoreConfig, this.brokerStatsManager, this.messageArrivingListener, this.brokerConfig); //3
-		...
-    //NettyRemotingServer
+
+    //创建NettyRemotingServer
     this.remotingServer = new NettyRemotingServer(this.nettyServerConfig, this.clientHousekeepingService);
-  	...
-    //消息处理的线程池
+  
+    //接收消息写入的线程池
     this.sendMessageExecutor = new BrokerFixedThreadPoolExecutor(
-                this.brokerConfig.getSendMessageThreadPoolNums(),
-                this.brokerConfig.getSendMessageThreadPoolNums(),
-                1000 * 60,
-                TimeUnit.MILLISECONDS,
-                this.sendThreadPoolQueue,
-                new ThreadFactoryImpl("SendMessageThread_"));
-		...
+				this.brokerConfig.getSendMessageThreadPoolNums(),
+				this.brokerConfig.getSendMessageThreadPoolNums(),
+        1000 * 60,
+        TimeUnit.MILLISECONDS,
+        this.sendThreadPoolQueue,
+        new ThreadFactoryImpl("SendMessageThread_"));
+
     this.registerProcessor(); //4
 }
 ```
@@ -39,14 +86,13 @@ public boolean initialize() throws CloneNotSupportedException {
 
 ```java
 public DefaultMessageStore(final MessageStoreConfig messageStoreConfig, final BrokerStatsManager brokerStatsManager, final MessageArrivingListener messageArrivingListener, final BrokerConfig brokerConfig) throws IOException {
-    //AllocateMappedFileService
+    //创建AllocateMappedFileService
     this.allocateMappedFileService = new AllocateMappedFileService(this);
-		...
-    //CommitLog
+
+    //创建CommitLog
     this.commitLog = new CommitLog(this); //3.1
-		...
-    //AllocateMappedFileService继承ServiceThread
-    this.allocateMappedFileService.start(); //3.2 
+
+    this.allocateMappedFileService.start(); //3.2
 }
 ```
 
@@ -54,10 +100,12 @@ public DefaultMessageStore(final MessageStoreConfig messageStoreConfig, final Br
 
 ```java
 public CommitLog(final DefaultMessageStore defaultMessageStore) {
-		//MappedFileQueue
-  	//MappedFile就是CommitLog文件
-		//private final CopyOnWriteArrayList<MappedFile> mappedFiles = new CopyOnWriteArrayList<MappedFile>();
-		this.mappedFileQueue = new MappedFileQueue(defaultMessageStore.getMessageStoreConfig().getStorePathCommitLog(), defaultMessageStore.getMessageStoreConfig().getMappedFileSizeCommitLog(), defaultMessageStore.getAllocateMappedFileService());
+		this.mappedFileQueue = new MappedFileQueue(
+      	defaultMessageStore.getMessageStoreConfig().getStorePathCommitLog(),
+				defaultMessageStore.getMessageStoreConfig().getMappedFileSizeCommitLog(),
+      	defaultMessageStore.getAllocateMappedFileService());
+  
+  	this.putMessageLock = defaultMessageStore.getMessageStoreConfig().isUseReentrantLockWhenPutMessage() ? new PutMessageReentrantLock() : new PutMessageSpinLock();
 }
 ```
 
@@ -69,6 +117,8 @@ public void run() {
 
 		}
 }
+↓
+↓
 ```
 
 #### 4.BrokerController#registerProcessor
@@ -77,13 +127,10 @@ public void run() {
 public void registerProcessor() {
     //消息接收处理类
     SendMessageProcessor sendProcessor = new SendMessageProcessor(this);
-		...
-    //注册到Netty
-    this.remotingServer.registerProcessor(RequestCode.SEND_MESSAGE_V2, sendProcessor, this.sendMessageExecutor); //4.1
-		...
-    //remotingServer出现了瓶颈,可以使用fastRemotingServer来处理部分流量
-    //fastRemotingServer不会处理PULL_MESSAGE类型的请求
-    this.fastRemotingServer.registerProcessor(RequestCode.SEND_MESSAGE_V2, sendProcessor, this.sendMessageExecutor);
+
+		this.remotingServer.registerProcessor(RequestCode.SEND_MESSAGE_V2,
+                                          sendProcessor,
+                                          this.sendMessageExecutor); //4.1
 }
 ```
 
@@ -91,7 +138,7 @@ public void registerProcessor() {
 
 ```java
 public void registerProcessor(int requestCode, NettyRequestProcessor processor, ExecutorService executor) {
-		Pair<NettyRequestProcessor, ExecutorService> pair = new Pair<NettyRequestProcessor, ExecutorService>(processor, executorThis);
+		Pair<NettyRequestProcessor, ExecutorService> pair = new Pair<>(processor, executorThis);
 		this.processorTable.put(requestCode, pair);
 }
 ```

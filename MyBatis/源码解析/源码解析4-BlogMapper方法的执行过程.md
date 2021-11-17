@@ -150,7 +150,7 @@ private <E> List<E> queryFromDatabase(MappedStatement ms, Object parameter, RowB
 	List<E> list;
   localCache.putObject(key, EXECUTION_PLACEHOLDER);
   try {
-  	list = doQuery(ms, parameter, rowBounds, resultHandler, boundSql); //7  
+  	list = doQuery(ms, parameter, rowBounds, resultHandler, boundSql); //7
   } finally {
   	localCache.removeObject(key);
 	}
@@ -184,20 +184,26 @@ private Statement prepareStatement(StatementHandler handler, Log statementLog) t
 }
 ```
 
-#### 8.ManagedTransaction#getConnection
+#### 8.JdbcTransaction#getConnection
 
 ```java
 public Connection getConnection() throws SQLException {
-	if (this.connection == null) {
-  	openConnection();
+  if (connection == null) {
+    openConnection();
   }
-  return this.connection;
+  return connection;
 }
 ↓
 ↓
 protected void openConnection() throws SQLException {
   //从数据源获取连接
-	this.connection = this.dataSource.getConnection();
+	this.connection = dataSource.getConnection();
+  //设置事务隔离级别
+  if (level != null) {
+  	connection.setTransactionIsolation(level.getLevel());
+	}
+  //设置事务是否自动提交
+	setDesiredAutoCommit(autoCommit);
 }
 ```
 

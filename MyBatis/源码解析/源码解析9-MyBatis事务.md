@@ -5,13 +5,13 @@ SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(input
 try (SqlSession session = sqlSessionFactory.openSession()) {
   User user = new User("boy", 27);
   mapper.saveUser(user);
-  session.commit();
+  session.commit(); //2
 }
 ```
 
 ---
 
-### 源码解析
+### 事务提交
 
 #### 1.DefaultSqlSession#commit
 
@@ -30,13 +30,12 @@ public void commit(boolean force) {
 ↓
 ↓
 private boolean isCommitOrRollbackRequired(boolean force) {
-	//autoCommit默认是false
-  //执行DefaultSqlSession#update后dirty也会变成true
+	//autoCommit默认是false && 执行saveUser后dirty会变成true
   return (!autoCommit && dirty) || force;
 }
 ```
 
-#### 2.BaseExecutor#commit
+#### .BaseExecutor#commit
 
 ```java
 public void commit(boolean required) throws SQLException {
@@ -57,18 +56,22 @@ if (connection != null && !connection.getAutoCommit()) {
 }
 ```
 
-#### 4.DefaultSqlSession#close
+---
+
+### 关闭SqlSession
+
+#### 1.DefaultSqlSession#close
 
 ```java
 public void close() {
   try {
-    //isCommitOrRollbackRequired这次返回false,因为dirty在事务提交后重新赋值为false
+    //isCommitOrRollbackRequired返回false,事务提交后dirty会重新赋值为false
   	executor.close(isCommitOrRollbackRequired(false));
   }
 }
 ```
 
-#### 5.BaseExecutor#close
+#### 2.BaseExecutor#close
 
 ```java
 public void close(boolean forceRollback) {
@@ -77,7 +80,7 @@ public void close(boolean forceRollback) {
       rollback(forceRollback);
     } finally {
       if (transaction != null) {
-        transaction.close(); //7
+        transaction.close(); //3
       }
     }
   }
@@ -92,14 +95,14 @@ public void rollback(boolean required) throws SQLException {
     } finally {
       //required等于false,不执行回滚操作
       if (required) {
-        transaction.rollback(); //6
+        transaction.rollback(); //2
       }
     }
   } 
 }
 ```
 
-#### 6.JdbcTransaction#rollback
+#### 2.JdbcTransaction#rollback
 
 ```java
 public void rollback() throws SQLException {
@@ -109,7 +112,7 @@ public void rollback() throws SQLException {
 }
 ```
 
-#### 7.JdbcTransaction#close
+#### 3.JdbcTransaction#close
 
 ```java
 public void close() throws SQLException {
@@ -120,7 +123,5 @@ public void close() throws SQLException {
   }
 }
 ```
-
-
 
 ---

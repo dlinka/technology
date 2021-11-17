@@ -1,5 +1,3 @@
-**核心概念**
-
 ```java
 ForkJoinPool内部提供了一个为我们已经创建好的线程池-common
 common中parallelism值为CPU核心数量-1,如果CPU核心数量是8,那么parallelism就等于7

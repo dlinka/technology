@@ -2,7 +2,7 @@
 
 ```java
 abstract static class Completion extends ForkJoinTask<Void> implements Runnable, AsynchronousCompletionTask {
-		 //无锁并发栈中下一个元素的引用
+		//无锁并发栈中下一个元素的引用
   	volatile Completion next;
 
   	abstract CompletableFuture<?> tryFire(int mode);

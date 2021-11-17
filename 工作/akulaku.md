@@ -1,8 +1,15 @@
+```java
+1.抛出异常没有问题,如果有的功能不抛出异常,可能永远发现不了问题
+```
+
+---
+
 **日志**
 
 ```java
-//控制台grep "[Batch Refresh Task]"这个功能的所有日志
-log.info("[Batch Refresh Task] xxx xxx ...", xxx, xxx, ...);
+可以将某一功能的日志加个标识
+  log.info("[Batch Refresh Task] xxx xxx ...", xxx, xxx, ...);
+这样使用cat XXX.log|grep "[Batch Refresh Task]"就可以显示这个功能的所有日志了
 ```
 
 ---

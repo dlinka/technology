@@ -1,16 +1,24 @@
 ```
-JDK之前有个Future接口,但是调用其get方法时,线程会被阻塞,这违反了异步编程的初衷
-而且如果需要判断任务是否结束,需要轮询处理,如果执行一个大任务,CPU大部分时间都在空转,很影响性能
-CompletableFuture是JDK1.8加入的,其利用回调函数完美解决了上面说的两个问题,它可以在任务结束后会自动执行某些功能
+JDK之前有个Future接口,但是调用其get方法时,线程会被阻塞,违反了异步编程的初衷.
+而且如果需要判断任务是否结束,需要进行轮询处理,执行一个大任务,就会导致CPU大部分时间都在空转,很影响性能.
+JDK1.8引入CompletableFuture,其利用类似回调函数的方式去异步执行功能,完美解决了上面说的两个问题.
 
-使用CompletableFuture如果执行的任务很耗时,那么请使用自定义的Executor,或者在方法末尾加上future.get(),等待执行结束.因为CompletableFuture默认使用ForkJoinPool,而ForkJoinPool里面的线程都是daemon线程,main线程跑完了,虚拟机也就结束了.
-
-thenApply和thenApplyAsync方法的区别
-先说thenApplyAsync,一定会使用线程池中的线程执行,可能是同一个,也可能线程池创建一个新的线程执行.
-再说thenApply,如果任务没有结束,使用前一个线程执行,如果任务已经结束,当前哪个线程调用thenApply方法,就哪个线程执行.
+使用CompletableFuture如果执行的任务很耗时,那么请使用自定义的Executor,或者在方法末尾加上future.get(),等待执行结束.
+因为CompletableFuture默认使用ForkJoinPool,而ForkJoinPool里面的线程都是daemon线程,main线程跑完了,虚拟机也就结束了.
 ```
 
 ---
+
+#### Completable API
+
+```
+thenApply和thenApplyAsync方法的区别
+先说thenApplyAsync,一定会使用线程池中的线程执行,可能是同一个,也可能线程池创建一个新的线程执行.
+再说thenApply,如果任务没有结束,使用前一个线程执行,如果任务已经结束,当前哪个线程调用thenApply方法,就哪个线程执行.
+
+join和get方法的区别
+join方法抛出的是uncheck异常,不强制开发者抛出,get方法需要开发者强制抛出
+```
 
 | 方法                                                         |                                                              |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -35,7 +43,7 @@ thenApply和thenApplyAsync方法的区别
 
 ---
 
-**线程执行的不确定性**
+#### 线程执行的不确定性
 
 ```java
 CompletableFuture<Integer> cf = CompletableFuture.supplyAsync(() -> {
@@ -56,14 +64,14 @@ CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> 1).thenA
     return i;
 });
 //main线程被阻塞
+...
 ```
 
 ---
 
-**依赖前一个任务结果再去进行计算可以使用thenApply,为什么还会有thenCompose方法呢?**
+#### 依赖前一个任务结果再去进行计算可以使用thenApply,为什么还会有thenCompose方法呢?
 
 ```java
-//compose2依赖compose1
 CompletableFuture<Integer> compose1() {
     return CompletableFuture.supplyAsync(() -> 0);
 }

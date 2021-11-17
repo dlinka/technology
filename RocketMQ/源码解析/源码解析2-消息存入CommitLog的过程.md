@@ -1,38 +1,35 @@
-#### 1.NettyServerHandler#channelRead0
+#### 1.NettyRemotingAbstract#processMessageReceived
+
+**NettyRemotingAbstract是NettyRemotingServer的父类**
 
 ```java
-@Override
-protected void channelRead0(ChannelHandlerContext ctx, RemotingCommand msg) throws Exception {
-    processMessageReceived(ctx, msg);
-}
-↓
-↓
-//NettyRemotingAbstract#processMessageReceived
-//NettyRemotingAbstract是NettyRemotingServer的父类
 public void processMessageReceived(ChannelHandlerContext ctx, RemotingCommand msg) throws Exception {
-		case REQUEST_COMMAND:
-    	processRequestCommand(ctx, cmd);
+    final RemotingCommand cmd = msg;
+    if (cmd != null) {
+        switch (cmd.getType()) {
+            case REQUEST_COMMAND:
+                processRequestCommand(ctx, cmd);
+                break;
+        }
+		}
 }
 ↓
 ↓
-//NettyRemotingAbstract#processRequestCommand
 public void processRequestCommand(final ChannelHandlerContext ctx, final RemotingCommand cmd) {
-  	//通过请求类型获取Pair
 		final Pair<NettyRequestProcessor, ExecutorService> matched = this.processorTable.get(cmd.getCode());
-		...
+  
     Runnable run = new Runnable() {
-    		@Override
         public void run() {
         		if (pair.getObject1() instanceof AsyncNettyRequestProcessor) {
-            		AsyncNettyRequestProcessor processor = (AsyncNettyRequestProcessor)pair.getObject1();
-            		processor.asyncProcessRequest(ctx, cmd, callback); //2
-        		}
+                AsyncNettyRequestProcessor processor = (AsyncNettyRequestProcessor)pair.getObject1();
+            		processor.asyncProcessRequest(ctx, cmd, callback);
+            }
         }
     }
-  	...
+
     final RequestTask requestTask = new RequestTask(run, ctx.channel(), cmd);
-  	//提交到线程池去执行
-    pair.getObject2().submit(requestTask);
+  	//提交线程池处理任务
+		pair.getObject2().submit(requestTask);
 }
 ```
 
@@ -40,24 +37,25 @@ public void processRequestCommand(final ChannelHandlerContext ctx, final Remotin
 
 ```java
 public void asyncProcessRequest(ChannelHandlerContext ctx, RemotingCommand request, RemotingResponseCallback responseCallback) throws Exception {
-  	asyncProcessRequest(ctx, request).thenAcceptAsync(responseCallback::callback, brokerController.getSendMessageExecutor());
+  	asyncProcessRequest(ctx, request).thenAcceptAsync(responseCallback::callback, this.brokerController.getSendMessageExecutor());
 }
 ↓
 ↓
-public CompletableFuture<RemotingCommand> asyncProcessRequest(ChannelHandlerContext ctx,
-                                                                  RemotingCommand request) throws RemotingCommandException {
-  	return asyncSendMessage(ctx, request, mqtraceContext, requestHeader);
+public CompletableFuture<RemotingCommand> asyncProcessRequest(ChannelHandlerContext ctx, RemotingCommand request) throws RemotingCommandException {
+  	else {
+        return this.asyncSendMessage(ctx, request, mqtraceContext, requestHeader);
+    }
 }
 ↓
 ↓
 private CompletableFuture<RemotingCommand> asyncSendMessage(ChannelHandlerContext ctx, RemotingCommand request, SendMessageContext mqtraceContext, SendMessageRequestHeader requestHeader) {
-		//MessageExtBrokerInner
+		//创建MessageExtBrokerInner
 		MessageExtBrokerInner msgInner = new MessageExtBrokerInner();
 		msgInner.setTopic(requestHeader.getTopic());
-		msgInner.setQueueId(queueIdInt);
-		...
+    msgInner.setQueueId(queueIdInt);
+
 		else {
-				putMessageResult = this.brokerController.getMessageStore().asyncPutMessage(msgInner);
+				putMessageResult = this.brokerController.getMessageStore().asyncPutMessage(msgInner); //3
 		}
 }
 ```
@@ -66,7 +64,7 @@ private CompletableFuture<RemotingCommand> asyncSendMessage(ChannelHandlerContex
 
 ```java
 public CompletableFuture<PutMessageResult> asyncPutMessage(MessageExtBrokerInner msg) {
-		CompletableFuture<PutMessageResult> putResultFuture = this.commitLog.asyncPutMessage(msg);
+		CompletableFuture<PutMessageResult> putResultFuture = this.commitLog.asyncPutMessage(msg); //4
 }
 ```
 
@@ -74,10 +72,10 @@ public CompletableFuture<PutMessageResult> asyncPutMessage(MessageExtBrokerInner
 
 ```java
 public CompletableFuture<PutMessageResult> asyncPutMessage(final MessageExtBrokerInner msg) {
-		//之前使用的是自旋锁,现在默认情况使用ReentrantLock
+		MappedFile mappedFile = this.mappedFileQueue.getLastMappedFile();
+  	//使用自旋锁,这里建议改成ReentrantLock
     putMessageLock.lock();
     try{
-				MappedFile mappedFile = this.mappedFileQueue.getLastMappedFile();
       	if (null == mappedFile || mappedFile.isFull()) {
         	//创建CommitLog文件
         	mappedFile = this.mappedFileQueue.getLastMappedFile(0); //5
