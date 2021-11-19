@@ -1,4 +1,4 @@
-#### maven
+#### Maven
 
 ```xml
 <parent>
@@ -304,3 +304,4 @@ public final Logger getLogger(final String name) {
 }
 ```
 
+---
