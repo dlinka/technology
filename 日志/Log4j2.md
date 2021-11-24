@@ -2,7 +2,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- monitorInterval:检测配置文件是否修改并重新配置,单位是秒 -->
 <Configuration monitorInterval="5">
-  
+
 	<Properties>
     	<!-- 
 					%date:日期
@@ -17,11 +17,12 @@
   </Properties>
   
   <Appenders>
-    <!-- 自定义Appender -->
-    <Log4j2Appender name="CustomAppender" appName="test_address_service_appender">
+    <!-- Log4j2Appender表示自定义一个Appender -->
+    <Log4j2Appender name="Custom-Appender" appName="XXX">
     
-    <!-- 输出到控制台 -->
+    <!-- Console表示输出到控制台 -->
   	<Console name="Console-Appender" target="SYSTEM_OUT">
+      <!-- 定义格式 -->
       <PatternLayout pattern="${LOG_PATTERN}" />
       <!-- 
 					onMatch="ACCEPT":匹配该级别及以上
@@ -31,31 +32,33 @@
 					onMismatch="DENY":不匹配该级别以下的
 					onMismatch="NEUTRAL":该级别及以下的,由下一个filter处理,如果当前是最后一个,则不匹配该级别以下的
 			-->
-      <!-- 下面的配置只打印INFO和DEBUG日志 -->
+      <!-- 只打印INFO和DEBUG日志 -->
       <Filters>
       	<ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/>
 				<ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
       </Filters>
     </Console>
     
-    <!-- 输出到文件 -->
-    <!-- append:等于false表示每次运行程序这个文件自动清空 -->
+    <!-- File表示输出到文件 -->
+    <!-- append:等于false表示每次运行服务之前的日志会被清空 -->
     <File name="File-Appender" fileName="${LOG_PATH}/test.log" append="false">
       <PatternLayout pattern="${LOG_PATTERN}" />
       <!-- 不设置ThresholdFilter表示打印所有级别 -->
     </File>
     
-    <!-- 滚动文件 -->
+    <!-- RollingFile表示滚动文件 -->
     <RollingFile name="RollingFile-Appender" fileName="${LOG_PATH}/info.log" filePattern="${FILE_PATH}/${FILE_NAME}-INFO-%d{yyyy-MM-dd HH}_%i.log.gz">
       <PatternLayout pattern="${LOG_PATTERN}" />
+      <!-- 只打印INFO及以上级别的日志 -->
       <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY" />
       <Policies>
         <!-- 每小时滚动一次 -->
+        <!-- modulate:表示调节到整点滚动 -->
         <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
         <!-- 文件到达10MB滚动 -->
         <SizeBasedTriggeringPolicy size="10MB" />
       </Policies>
-      <!-- 每小时最多保留15个,默认是7个 -->
+      <!-- 每天最多保留15个滚动文件,默认是7个 -->
       <DefaultRolloverStrategy max="15" />
     </RollingFile>
     
@@ -63,12 +66,11 @@
     <RollingRandomAccessFile name="RollingRandomAccessFile-Appender" fileName="${LOG_PATH}/error.log" filePattern="${FILE_PATH}/${FILE_NAME}-ERROR-%d{yyyy-MM-dd HH}_%i.log.gz">
 			<PatternLayout pattern="${LOG_PATTERN}" />
 			<Policies>
-        <!-- 每小时滚动一次 -->
       	<TimeBasedTriggeringPolicy interval="1" modulate="true"/>
-				<!-- 文件到达10MB滚动 -->
         <SizeBasedTriggeringPolicy size="10MB" />
 			</Policies>
 			<DefaultRolloverStrategy>
+        <!-- 每次滚动删除14天没有变更的文件 -->
 				<Delete basePath="${LOG_PATH}">
         	<IfFileName glob="${FILE_NAME}-ERROR-*.log.gz"/>
           <IfLastModified age="14d"/>
@@ -81,7 +83,7 @@
   <Loggers>
     <!-- 同步Logger配置 -->
     <Logger name="org.mybatis" level="INFO" additivity="false">
-    	<AppenderRef ref="Console-Appender" />
+    	<AppenderRef ref="Console-Appender" level="ERROR" />
     </Logger>
     <Root level="INFO">
     	<AppenderRef ref="Console-Appender" />
@@ -90,9 +92,9 @@
     </Root>
     
     <!-- 异步Logger配置 -->
-    <!-- 是否显示文件行数,若为异步Logger,开启此项会造成性能影响 -->
+    <!-- includeLocation:是否显示文件行数,若为异步Logger,开启此项会造成性能影响 -->
     <AsyncLogger name="org.mybatis" level="INFO" additivity="false" includeLocation="true">
-      <AppenderRef ref="Console-Appender" level="ERROR" />
+      <AppenderRef ref="Console-Appender" />
     </AsyncLogger>
     <AsyncRoot level="INFO" includeLocation="true">
       <AppenderRef ref="Console-Appender" />
@@ -151,16 +153,18 @@
 
 ##### DefaultRolloverStrategy
 
+默认的rollover策略,即使没有显式指明,也相当于为RollingFile配置下添加了如下语句
+
 ```xml
-默认的rollover策略,即使没有显式指明,也相当于为RollingFile配置下添加了如下语句<DefaultRolloverStrategy max="7"/>,DefaultRolloverStrategy默认的max为7
-
-max参数需要于filePattern中的计数器%i配合才起作用
-1.如果filePattern中仅含有date pattern,max参数将不起作用,例如filePattern="logs/app-%d{yyyy-MM-dd}.log"
-
-2.如果filePattern中仅含有整数计数器(即%i),每次rollover文件重命名时的计数器将每次加1(初始值为1),若达到max的值,将删除旧的文件,例如filePattern="logs/app-%i.log"
-
-3.如果filePattern中既含有date pattern,又含有%i,每次rollover计数器将每次加1,若达到max的值,将删除旧的文件,直到data不再符合,被替换为当前的日期和时间,计数器再从1开始,例如filePattern="logs/app-%d{yyyy-MM-dd HH-mm}-%i.log"
+<!-- DefaultRolloverStrategy默认的max为7 -->
+<!-- max参数需要于filePattern中的计数器%i配合才起作用 -->
+<!-- 1.如果filePattern中仅含有date pattern,max参数将不起作用,例如filePattern="logs/app-%d{yyyy-MM-dd}.log" -->
+<!-- 2.如果filePattern中仅含有整数计数器(即%i),每次rollover文件重命名时的计数器将每次加1(初始值为1),若达到max的值,将删除旧的文件,例如filePattern="logs/app-%i.log" -->
+<!-- 3.如果filePattern中既含有date pattern,又含有%i,每次rollover计数器将每次加1,若达到max的值,将删除旧的文件,直到data不再符合,被替换为当前的日期和时间,计数器再从1开始,例如filePattern="logs/app-%d{yyyy-MM-dd HH-mm}-%i.log" -->
+<DefaultRolloverStrategy max="7"/>
 ```
+
+1.filePattern中仅含有date pattern
 
 ```xml
 <Appenders>
@@ -180,7 +184,9 @@ max参数需要于filePattern中的计数器%i配合才起作用
 | ------------- | ------------------------- | ------------------ | ------------------------------------------------------------ |
 | 0             | app.log                   |                    | 所有的log都写进app.log中                                     |
 | 1             | app.log                   | app-2017-08-17.log | 当app.log的size达到10KB,触发第1次rollover,app.log被重命名为app-2017-08-17.log<br/>新的app.log被创建出来，用于写入log |
-| 2             | app.log                   | app-2017-08-17.log | 当app.log的size达到10KB,触发第2次rollover,原来的app-2017-08-17.log将删除<br/>app.log被重命名为app-2017-08-17.log<br/>新的app.log文件被创建出来,用于写入log。 |
+| 2             | app.log                   | app-2017-08-17.log | 当app.log的size达到10KB,触发第2次rollover,原来的app-2017-08-17.log将删除,app.log被重命名为app-2017-08-17.log<br/>新的app.log文件被创建出来,用于写入log |
+
+2.filePattern中仅含有整数计数器(即%i)
 
 ```xml
 <Appenders>
@@ -203,6 +209,8 @@ max参数需要于filePattern中的计数器%i配合才起作用
 |         2         |          app.log          | app-1.log<br/>app-2.log               | 当app.log的size达到10KB,触发第2次rollover,app.log被重命名为app-2.log<br/>新的app.log被创建出来，用于写入log |
 |         3         |          app.log          | app-1.log<br/>app-2.log<br/>app-3.log | 当app.log的size达到10KB,触发第3次rollover,app.log被重命名为app-3.log<br/>新的app.log被创建出来,用于写入log |
 |         4         |          app.log          | app-1.log<br/>app-2.log<br/>app-3.log | 当app.log的size达到10KB,触发第4次rollover,app-1.log被删除(即最初的、最旧的app.log)<br/>app-2.log被重命名为app-1.log,app-3.log被重命名为app-2.log,app.log被重命名为app-3.log<br/>新的app.log被创建出来,用于写入log |
+
+3.filePattern中既含有date pattern,又含有%i
 
 ```xml
 <Appenders>

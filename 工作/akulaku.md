@@ -10,6 +10,8 @@
 可以将某一功能的日志加个标识
   log.info("[Batch Refresh Task] xxx xxx ...", xxx, xxx, ...);
 这样使用cat XXX.log|grep "[Batch Refresh Task]"就可以显示这个功能的所有日志了
+  
+比如利用awk统计日志,最好日志按照一定分隔符分割
 ```
 
 ---
