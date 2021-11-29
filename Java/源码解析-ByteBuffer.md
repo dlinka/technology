@@ -1,8 +1,14 @@
 ```java
+//ByteBuffer实现类是HeapByteBuffer、
+//HeapByteBuffer使用的是堆内内存
 ByteBuffer buffer = ByteBuffer.allocate(10);
 ```
 
+![HeapByteBuffer继承关系](./HeapByteBuffer.png)
+
 ---
+
+### 源码解析
 
 #### Buffer
 
@@ -133,6 +139,5 @@ class HeapByteBuffer extends ByteBuffer {
 }
 ```
 
-
-
 ---
+
