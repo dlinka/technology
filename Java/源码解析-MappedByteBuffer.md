@@ -1,16 +1,9 @@
-```java
-Java对于MMAP或者叫零拷贝的API
-
-当DirectByteBuffer不再被使用时,会触发内部cleaner的钩子,保险起见可以考虑手动回收:((DirectBuffer) buffer).cleaner().clean();
-```
-
 ---
 
 ```java
 File file = new File("test.txt");
 FileChannel channel = new RandomAccessFile(file, "rw").getChannel();
-//MappedByteBuffer实现类是DirectByteBuffer
-//DirectByteBuffer使用的是堆外内存
+//MappedByteBuffer的实现类是DirectByteBuffer,DirectByteBuffer使用的是堆外内存
 MappedByteBuffer mappedByteBuffer = channel.map(FileChannel.MapMode.READ_WRITE, 0, 1000);
 for (int i = 0; i < 1000; i++){
   mappedByteBuffer.put((byte)i);
@@ -32,7 +25,7 @@ for (int i = 0; i < 1000; i++){
 ```java
 public MappedByteBuffer map(MapMode mode, long position, long size) {
   try {
-    //native函数map0完成MMAP
+    //map0完成MMAP
     addr = map0(imode, mapPosition, mapSize); //2
   } catch (OutOfMemoryError x) {
     //如果抛出异常,执行一次GC
@@ -137,12 +130,48 @@ static MappedByteBuffer newMappedByteBuffer(int size, long addr,
 
 #### 4.DirectByteBuffer的构造方法
 
+**当DirectByteBuffer不再被使用时,会触发内部Cleaner的钩子,保险起见可以考虑手动回收:((DirectBuffer) buffer).cleaner().clean();**
+
 ```java
 DirectByteBuffer(int cap) {
-  //Cleaner对象继承自PhantomReference,是一个虚引用
+  //Cleaner对象继承自PhantomReference,表示是一个虚引用,GC时会被进行回收
   cleaner = Cleaner.create(this, new Deallocator(base, size, cap));
 }
+```
 
+#### 5.Cleaner#clean
+
+**ReferenceHandler#tryHandlePending中会判断是否是Cleaner对象,如果是调用clean方法**
+
+```java
+public void clean() {
+	//队列元素移动的操作,返回true,执行下面的run方法
+  if (!remove(this))
+    return;
+  try {
+    //构造Cleaner的时候初始化了一个Deallocator
+    thunk.run(); //6
+  } catch (final Throwable x) {
+  }
+}
+```
+
+#### 6.DirectByteBuffer内部类Deallocator
+
+```java
+private static class Deallocator implements Runnable {
+  private static Unsafe unsafe = Unsafe.getUnsafe();
+  
+  public void run() {
+    if (address == 0) {
+      return;
+    }
+    //释放堆外内存
+    unsafe.freeMemory(address);
+    address = 0;
+    Bits.unreserveMemory(size, capacity);
+  }
+}
 ```
 
 ---

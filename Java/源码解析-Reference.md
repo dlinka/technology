@@ -1,5 +1,5 @@
 ```java
-软引用:在内存不足时回收软引用指向的对象,JVM会在抛出OOME前清理所有软引用指向的对象,如果清理完还是内存不足,才会抛出OOME
+软引用:在内存不足时回收,JVM会在抛出OOME前清理所有软引用指向的对象,如果清理完还是内存不足,才会抛出OOME
 弱引用:GC就会回收些对象
 虚引用:DirectByteBuffer中有其应用场景
 ```
@@ -89,7 +89,8 @@ public abstract class Reference<T> {
     } catch (OutOfMemoryError x) { 
     } catch (InterruptedException x) { 
     }
-    //Cleaner处理堆外内存,比如DirectByteBuffer中会创建一个Cleaner
+    //如果要回收的对象的引用是Cleaner类型,则调用clean方法进行资源回收
+    //比如DirectByteBuffer中会创建一个Cleaner,处理堆外内存
     if (c != null) {
       c.clean();
       return true;

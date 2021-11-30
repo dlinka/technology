@@ -1,6 +1,5 @@
 ```java
-//ByteBuffer实现类是HeapByteBuffer、
-//HeapByteBuffer使用的是堆内内存
+//ByteBuffer的实现类是HeapByteBuffer,HeapByteBuffer使用的是堆内内存
 ByteBuffer buffer = ByteBuffer.allocate(10);
 ```
 
