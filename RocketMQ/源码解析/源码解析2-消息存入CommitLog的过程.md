@@ -164,50 +164,58 @@ public AppendMessageResult appendMessage(final MessageExtBrokerInner msg, final 
 ↓
 public AppendMessageResult appendMessagesInner(final MessageExt messageExt, final AppendMessageCallback cb) {
   //当前写入的位置
-	int currentPos = this.wrotePosition.get();
-  //当前位置小于文件大小
+  int currentPos = this.wrotePosition.get();
   if (currentPos < this.fileSize) {
     ByteBuffer byteBuffer = writeBuffer != null ? writeBuffer.slice() : this.mappedByteBuffer.slice();
+    //定位到当前写入的位置
+    byteBuffer.position(currentPos);
+    AppendMessageResult result = cb.doAppend(this.getFileFromOffset(),   //文件的偏移,第一个CommitLog等于0
+                                             byteBuffer,
+                                             this.fileSize - currentPos, //剩余的空间
+                                             (MessageExtBrokerInner) messageExt); //7
+    this.wrotePosition.addAndGet(result.getWroteBytes());
+    this.storeTimestamp = result.getStoreTimestamp();
+    return result;
   }
 }
 ```
 
-
-
-
-
-
-
-
-
-5.MappedFile#appendMessage
+#### 7.DefaultAppendMessageCallback#doAppend
 
 ```java
+public AppendMessageResult doAppend(final long fileFromOffset,
+                                    final ByteBuffer byteBuffer,
+                                    final int maxBlank,
+                                    final MessageExtBrokerInner msgInner) {
+  //复用msgStoreItemMemory
+  this.resetByteBuffer(msgStoreItemMemory, msgLen);
+  // 1 TOTALSIZE
+  this.msgStoreItemMemory.putInt(msgLen);
+  // 2 MAGICCODE
+  this.msgStoreItemMemory.putInt(CommitLog.MESSAGE_MAGIC_CODE);
 
-ByteBuffer byteBuffer = writeBuffer != null ? writeBuffer.slice() : mappedByteBuffer.slice();
-byteBuffer.position(currentPos);
-if (messageExt instanceof MessageExtBrokerInner) {
-	result = cb.doAppend(getFileFromOffset(), byteBuffer, fileSize - currentPos, (MessageExtBrokerInner) messageExt);
+
+  final long beginTimeMills = CommitLog.this.defaultMessageStore.now();
+  //写入
+  byteBuffer.put(this.msgStoreItemMemory.array(), 0, msgLen);
+  AppendMessageResult result = new AppendMessageResult(AppendMessageStatus.PUT_OK,
+                                                       wroteOffset, //物理地址
+                                                       msgLen,
+                                                       msgId,
+                                                       msgInner.getStoreTimestamp(),
+                                                       queueOffset,
+                                                       CommitLog.this.defaultMessageStore.now() - beginTimeMills);
+	//默认情况tranType等于0
+	switch (tranType) {
+    case MessageSysFlag.TRANSACTION_NOT_TYPE:
+    //这里主要用来设置queueOffset
+    case MessageSysFlag.TRANSACTION_COMMIT_TYPE:
+      CommitLog.this.topicQueueTable.put(key, ++queueOffset);
+      break;
+  }
+  return result;
 }
-```
 
-6.DefaultAppendMessageCallback#doAppend
-
-```java
-this.msgStoreItemMemory.putInt(msgLen);
-this.msgStoreItemMemory.putInt(CommitLog.MESSAGE_MAGIC_CODE);
-...
-byteBuffer.put(this.msgStoreItemMemory.array(), 0, msgLen);
-...
-AppendMessageResult result = new AppendMessageResult(AppendMessageStatus.PUT_OK, wroteOffset, msgLen, msgId, msgInner.getStoreTimestamp(), queueOffset, CommitLog.this.defaultMessageStore.now() - beginTimeMills);
-...
-switch (tranType) {
-	case MessageSysFlag.TRANSACTION_NOT_TYPE:
-  //默认情况tranType等于0,所以这里也会被执行
-  //这里主要用来设置QUEUEOFFSET
-	case MessageSysFlag.TRANSACTION_COMMIT_TYPE:
-		CommitLog.this.topicQueueTable.put(key, ++queueOffset);
-}
 ```
 
 ---

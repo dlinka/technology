@@ -1,58 +1,3 @@
-### 关键类
-
-#### BrokerController
-
-```java
-public class BrokerController {
-  private MessageStore messageStore;
-  private RemotingServer remotingServer;
-  private RemotingServer fastRemotingServer;
-  private ExecutorService sendMessageExecutor;
-}
-```
-
-#### DefaultMessageStore
-
-```java
-public class DefaultMessageStore implements MessageStore {
-		private final CommitLog commitLog;
-	  private final AllocateMappedFileService allocateMappedFileService;
-}
-```
-
-#### CommitLog
-
-```java
-public class CommitLog {
-  protected final MappedFileQueue mappedFileQueue;  
-  protected final PutMessageLock putMessageLock;
-}
-```
-
-#### MappedFileQueue
-
-```java
-public class MappedFileQueue {
-  //MappedFile就是CommitLog文件
-  private final CopyOnWriteArrayList<MappedFile> mappedFiles = new CopyOnWriteArrayList<>();
-}
-```
-
-#### MappedFile
-
-```java
-public class MappedFile extends ReferenceResource {
-  //创建一个CommitLog文件就增加1个G
-	private static final AtomicLong TOTAL_MAPPED_VIRTUAL_MEMORY = new AtomicLong(0);
-	//CommitLog文件个数
-  private static final AtomicInteger TOTAL_MAPPED_FILES = new AtomicInteger(0);
-}
-```
-
-
-
----
-
 #### 1.BrokerStartup#main
 
 ```java
@@ -63,10 +8,7 @@ public static void main(String[] args) {
 ↓
 public static BrokerController createBrokerController(String[] args) {
   final BrokerController controller = new BrokerController(
-    brokerConfig,
-    nettyServerConfig,
-    nettyClientConfig,
-    messageStoreConfig);
+    brokerConfig, nettyServerConfig, nettyClientConfig, messageStoreConfig);
   controller.initialize();
   return controller;
 }
@@ -82,7 +24,7 @@ public boolean initialize() throws CloneNotSupportedException {
   //创建NettyRemotingServer
   this.remotingServer = new NettyRemotingServer(this.nettyServerConfig, this.clientHousekeepingService);
 
-  //接收消息写入处理的线程池
+  //消息写入处理的线程池
   this.sendMessageExecutor = new BrokerFixedThreadPoolExecutor(
     this.brokerConfig.getSendMessageThreadPoolNums(),
     this.brokerConfig.getSendMessageThreadPoolNums(),
@@ -100,7 +42,7 @@ public boolean initialize() throws CloneNotSupportedException {
 ```java
 public DefaultMessageStore(final MessageStoreConfig messageStoreConfig, final BrokerStatsManager brokerStatsManager, final MessageArrivingListener messageArrivingListener, final BrokerConfig brokerConfig) throws IOException {
   //创建AllocateMappedFileService
-  this.allocateMappedFileService = new AllocateMappedFileService(this); 
+  this.allocateMappedFileService = new AllocateMappedFileService(this);
 
   //创建CommitLog
   this.commitLog = new CommitLog(this); //3.1
@@ -169,7 +111,7 @@ private void init(final String fileName, final int fileSize) throws IOException 
   this.file = new File(fileName);
   this.fileFromOffset = Long.parseLong(this.file.getName());
   
-  //MMAP的知识
+  //MMAP
   this.fileChannel = new RandomAccessFile(this.file, "rw").getChannel();
   this.mappedByteBuffer = this.fileChannel.map(MapMode.READ_WRITE, 0, fileSize);
 }
