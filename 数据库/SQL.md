@@ -1,4 +1,11 @@
-### 时间
+#### ON DUPLICATE KEY UPDATE
+
+```sql
+-- 只对id是主键或者唯一索引生效
+INSERT INTO table (id,name, age) VALUES (1,'CR',1) ON DUPLICATE KEY UPDATE age=age+1
+```
+
+#### 时间
 
 ```sql
 -- 这种方式不生效,无论time是DATETIME,还是TIMESTAMP
