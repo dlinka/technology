@@ -1,4 +1,3 @@
----
 
 ```java
 File file = new File("test.txt");
@@ -15,8 +14,6 @@ for (int i = 0; i < 1000; i++){
 ```
 
 ![DirectByteBuffer继承关系](./DirectByteBuffer.png)
-
----
 
 ### 源码解析
 
