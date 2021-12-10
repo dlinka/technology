@@ -1,9 +1,14 @@
+<img src="./DirectByteBuffer.png" alt="DirectByteBuffer继承关系" style="zoom:50%;" />
+
 
 ```java
-File file = new File("test.txt");
-FileChannel channel = new RandomAccessFile(file, "rw").getChannel();
-//MappedByteBuffer的实现类是DirectByteBuffer,DirectByteBuffer使用的是堆外内存
+FileChannel channel = new RandomAccessFile(new File("xxx"), "rw").getChannel();
+/**
+ * MappedByteBuffer的实现类是DirectByteBuffer
+ * DirectByteBuffer使用的是堆外内存
+ */
 MappedByteBuffer mappedByteBuffer = channel.map(FileChannel.MapMode.READ_WRITE, 0, 1000);
+
 for (int i = 0; i < 1000; i++){
   mappedByteBuffer.put((byte)i);
 }
@@ -13,7 +18,7 @@ for (int i = 0; i < 1000; i++){
 }
 ```
 
-![DirectByteBuffer继承关系](./DirectByteBuffer.png)
+---
 
 ### 源码解析
 
