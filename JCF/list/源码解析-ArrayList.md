@@ -267,8 +267,6 @@ thread2.start();
 使用CopyOnWriteArrayList并发集合或者使用锁来控制
 ```
 
-
-
 ---
 
 

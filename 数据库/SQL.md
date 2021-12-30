@@ -1,21 +1,3 @@
-#### ON DUPLICATE KEY UPDATE
-
-```sql
--- 只对id是主键或者唯一索引生效
-INSERT INTO table (id,name, age) VALUES (1,'CR',1) ON DUPLICATE KEY UPDATE age=age+1
-```
-
-#### 时间
-
-```sql
--- 这种方式不生效,无论time是DATETIME,还是TIMESTAMP
-SELECT * FROM table WHERE create_time > 1580970685000
-
-SELECT * FROM table WHERE UNIX_TIMESTAMP(create_time) >= UNIX_TIMESTAMP('2021-06-01 06:01:00')
-```
-
----
-
 ### 阿里的一道面试题
 
 假设我有一个网站,每次登陆的时候都会记录该用户的登陆信息,该信息用关系型数据库来存储,字段设计如下:
