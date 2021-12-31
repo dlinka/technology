@@ -1,3 +1,10 @@
+```java
+初始化List的时候指定其大小,这样可以减少List的扩容次数
+List的contains方法时间复杂度为O(n),可以将List转成Set,将时间复杂度变为O(1)
+```
+
+---
+
 #### 1.ArrayList的构造方法
 
 ```java
