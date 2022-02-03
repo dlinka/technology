@@ -1,3 +1,32 @@
+
+
+---
+
+
+
+### DISTINCT
+
+| id   | name | age  |
+| ---- | ---- | ---- |
+| 1    | cr   | 18   |
+| 2    | CR   | 30   |
+| 3    | 陈润 | 18   |
+
+```sql
+-- 查询表中不重复的age数量
+SELECT COUNT(DISTINCT age) FROM user
+
+-- 查询表中不同的age值
+SELECT DISTINCT age FROM user
+
+-- 查询表中name和age都不相同的值
+SELECT DISTINCT name, age FROM user
+```
+
+---
+
+
+
 ### DML
 
 #### INSERT、REPLEASE INTO、INSERT IGNORE的区别
@@ -60,6 +89,15 @@ INSERT INTO user (id,name,age) VALUES (1,'CR',1) ON DUPLICATE KEY UPDATE age=age
 
 ### DDL
 
+#### 查看表结构
+
+```sql
+DESC table_name
+SHOW CREATE TABLE table_name
+```
+
+
+
 #### ALTER
 
 ##### 更新类型、默认值等信息
@@ -79,8 +117,16 @@ ALTER TABLE user CHANGE name nickname VARCHAR(255) NOT NULL COMMENT '昵称'
 ##### 增加字段
 
 ```sql
-ALTER TABLE user ADD gender TINYINT(4) DEFAULT '0' COMMENT '性别' AFTER name;
+ALTER TABLE user ADD gender TINYINT(4) DEFAULT '0' COMMENT '性别' AFTER name
 ```
+
+##### 删除字段
+
+```sql
+ALTER TABLE user DROP profile
+```
+
+
 
 ---
 
@@ -88,7 +134,7 @@ ALTER TABLE user ADD gender TINYINT(4) DEFAULT '0' COMMENT '性别' AFTER name;
 
 ### 函数
 
-#### IFNULL
+##### IFNULL
 
 ```sql
 -- 这行SQL查不出来real_name等于NULL数据
@@ -98,7 +144,7 @@ SELECT * FROM user WHERE age!=0
 SELECT * FROM user WHERE IFNULL(age, -1)!=0
 ```
 
-#### UNIX_TIMESTAMP
+##### UNIX_TIMESTAMP
 
 ```sql
 -- 这种方式不生效,无论time类型是DATETIME,还是TIMESTAMP
@@ -107,3 +153,20 @@ SELECT * FROM table WHERE time > 1580970685000
 SELECT * FROM table WHERE UNIX_TIMESTAMP(time) >= UNIX_TIMESTAMP('2021-06-01 06:01:00')
 ```
 
+##### DATE_ADD
+
+```sql
+-- 加7天
+UPDATE table SET column = DATE_ADD(column, INTERVAL 7 DAY)
+```
+
+##### DATE_SUB
+
+```sql
+-- 减1个月
+UPDATE table SET column = DATE_SUB(column, INTERVAL 1 MONTH)
+```
+
+
+
+---
