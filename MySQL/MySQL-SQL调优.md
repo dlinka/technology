@@ -147,42 +147,21 @@ or不会使用索引
     union
     (select * from table where d1=1)
 
----
-
-
-
 #### 分页查询
 
-```sql
--- MySQL会查到1000020条数据,然后丢弃前面的1000000,只查后面的20条数据,非常浪费资源
-select id,name,age from user limit 1000000,20
+分页查询越到后面时间越长
 
+```sql
+-- 这种方式会查询1000020条数据,然后丢弃前面的1000000,只留后面的20条数据,非常浪费资源
+select id,name,age from user limit 1000000,20
+↓
+↓
+-- 优化1
 -- 找到分页最大的id,然后利用id上的索引查询
 select id,name,age from user where id > 1000000 limit 20
-
--- 也可以使用between
+-- 优化2
+-- between区间查询
 select id,name,age from user where id between 1000000 and 1000020
-```
-
-
-
-```sql
--- 10万行的表
--- 执行平均时长10ms
-select * from fitness_session order by session_id limit 0,10
--- 执行平均时长45ms
-select * from fitness_session order by session_id limit 90000,10
--- 通过结果可以看出分页查询越到后面时间越长
-
--- 优化方案1
-//执行平均时长30ms
-select * from fitness_session where session_id >=
-(select session_id from fitness_session order by session_id limit 80000,1)
-order by session_id limit 0,10;
-
-优化方案2
-//假设session_id为连续的
-select * from fitness_session where session_id between 180072 and 180081;
 ```
 
 ---
