@@ -15,7 +15,8 @@ ByteBuffer buffer = ByteBuffer.allocate(10);
 public abstract class Buffer {
   private int mark = -1;
 	private int position = 0;
-	private int limit;
+	private
+    
 	private int capacity;
   
   //初始化:mark=-1,pos=0,lim=10,cap=10

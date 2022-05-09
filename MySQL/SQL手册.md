@@ -1,4 +1,22 @@
+### JOIN
 
+##### left join展示count(*)为0的记录
+
+```sql
+SELECT
+	t.id,
+	t.country_id,
+	t.type_name,
+	IFNULL( c.illegal_word_count, 0 ) AS illegal_word_count 
+FROM
+	t_illegal_word_type AS t
+	LEFT JOIN ( SELECT type_id, COUNT(*) AS illegal_word_count FROM t_illegal_word GROUP BY type_id ) AS c ON t.id = c.type_id 
+WHERE
+	t.deleted = 0 
+ORDER BY
+	t.create_time DESC 
+	LIMIT 0, 50
+```
 
 ---
 

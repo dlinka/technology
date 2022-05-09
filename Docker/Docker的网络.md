@@ -1,6 +1,4 @@
-#### docker0
-
-宿主机docker0
+#### 宿主机:docker0
 
 ```shell
 ip addr
@@ -13,20 +11,21 @@ ip addr
 
 ---
 
-#### 容器和宿主机之间网络
+#### 网络测试
 
 ```shell
+#启动一个新的容器
 docker run -it centos /bin/bash
 
-#容器ip=172.17.0.2
 ip addr
 ↓
 ↓
+#容器IP=172.17.0.2
 268: eth0@if269: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default 
     link/ether 02:42:ac:11:00:02 brd ff:ff:ff:ff:ff:ff link-netnsid 0
     inet 172.17.0.2/16 brd 172.17.255.255 scope global eth0
 
-#容器ping宿主机
+#ping宿主机
 ping 172.17.0.1
 ↓
 ↓
@@ -53,21 +52,19 @@ ip addr
 ↓
 269: veth316ca32@if268: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue master docker0 state UP 
     link/ether ce:fd:b7:61:9a:1d brd ff:ff:ff:ff:ff:ff link-netnsid 0
-```
-
-#### 容器和容器之间网络
-
-```shell
+    
+#再启动一个新的容器
 docker run -it centos /bin/bash
 
 ip addr
 ↓
 ↓
+#容器IP=172.17.0.3
 270: eth0@if271: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default 
     link/ether 02:42:ac:11:00:03 brd ff:ff:ff:ff:ff:ff link-netnsid 0
     inet 172.17.0.3/16 brd 172.17.255.255 scope global eth0
 
-#互相ping通
+#ping第一个容器
 ping 172.17.0.2
 ↓
 ↓
@@ -82,8 +79,8 @@ PING 172.17.0.2 (172.17.0.2) 56(84) bytes of data.
 #### --link
 
 ```shell
-#将container的ip写入hosts
-docker run -it --name centos --link container centos:7
+#将container_name的ip写入容器的hosts文件中
+docker run -it --name centos --link container_name centos:7
 ```
 
 ---
