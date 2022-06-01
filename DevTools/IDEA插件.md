@@ -13,11 +13,10 @@
 
 我的必装插件
 
-```java
+```
 .ignore
-
 Lombok
-
+RestfulTool
 Rainbow Brackets //括号根据颜色被区分
 Grep Console //日志变色
 Free MyBatis plugin //方法可以直接跳转到mapper.xml
