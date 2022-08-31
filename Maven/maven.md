@@ -27,5 +27,4 @@ mvn dependency:tree -Dincludes="::*-SNAPSHOT"
 
 ---
 
-[Maven最佳实践:Maven仓库](https://www.iteye.com/blog/juvenshun-359256)  
 [Maven最佳实践:版本管理](https://www.iteye.com/blog/juvenshun-376422)

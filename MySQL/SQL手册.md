@@ -1,3 +1,14 @@
+```sql
+-- 页大小，默认是16384（16KB）
+SHOW VARIABLES LIKE "innodb_page_size"
+-- 行格式，默认是Dynamic
+SHOW VARIABLES LIKE "innodb_default_row_format"
+```
+
+
+
+---
+
 ### JOIN
 
 ##### left join展示count(*)为0的记录
@@ -185,6 +196,11 @@ UPDATE table SET column = DATE_ADD(column, INTERVAL 7 DAY)
 UPDATE table SET column = DATE_SUB(column, INTERVAL 1 MONTH)
 ```
 
+##### LENGTH
 
+```sql
+-- 查询c2的字节长度
+SELECT LENGTH(c2) from test where c1='aaaa';
+```
 
 ---

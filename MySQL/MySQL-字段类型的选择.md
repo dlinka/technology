@@ -69,3 +69,12 @@ insert into test(decimal_field) values(0.12543);
     上面合起来就是10个字节
 
 ---
+
+### varchar(n)
+
+
+
+- 
+
+
+
