@@ -1,48 +1,3 @@
-### 官方示例
-
-```java
-String resource = "org/mybatis/example/mybatis-config.xml";
-InputStream inputStream = Resources.getResourceAsStream(resource);
-SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-```
-
-```xml
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE configuration
-  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-config.dtd">
-<configuration>
-  <environments default="development">
-    <environment id="development">
-      <transactionManager type="JDBC"/>
-      <dataSource type="POOLED">
-        <property name="driver" value="${driver}"/>
-        <property name="url" value="${url}"/>
-        <property name="username" value="${username}"/>
-        <property name="password" value="${password}"/>
-      </dataSource>
-    </environment>
-  </environments>
-  <mappers>
-    <mapper resource="org/mybatis/example/BlogMapper.xml"/>
-  </mappers>
-</configuration>
-```
-
-```xml
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.mybatis.example.BlogMapper">
-  <select id="selectBlog" resultType="Blog">
-    select * from Blog where id = #{id}
-  </select>
-</mapper>
-```
-
----
-
 ### 关键类
 
 #### Configuration
@@ -79,7 +34,7 @@ public SqlSessionFactory build(InputStream inputStream) {
 ↓
 public SqlSessionFactory build(InputStream inputStream, String environment, Properties properties) {
 	XMLConfigBuilder parser = new XMLConfigBuilder(inputStream, environment, properties);
-  //解析配置文件
+  //解析Mybatis配置文件
   Configuration configuration = parser.parse(); //2
   return build(configuration);
 }
@@ -95,15 +50,12 @@ public SqlSessionFactory build(Configuration config) {
 
 ```java
 public Configuration parse() {
-  parsed = true;
 	parseConfiguration(parser.evalNode("/configuration"));
   return configuration;
 }
 ↓
 ↓
 private void parseConfiguration(XNode root) {
-  //plugins标签
-  pluginElement(root.evalNode("plugins"));
   //environments标签
   environmentsElement(root.evalNode("environments"));
   //mappers标签
@@ -112,17 +64,12 @@ private void parseConfiguration(XNode root) {
 ↓
 ↓
 private void mapperElement(XNode parent) throws Exception {
-	//mappers标签中的mapper标签
   //<mapper resource="org/mybatis/example/BlogMapper.xml"/> 
   for (XNode child : parent.getChildren()) {
-  	else {
-      if(resource != null && url == null && mapperClass == null) {
-        InputStream inputStream = Resources.getResourceAsStream(resource);
-				XMLMapperBuilder mapperParser = new XMLMapperBuilder(inputStream, configuration, resource, configuration.getSqlFragments());
-        //解析Mapper文件
-				mapperParser.parse();
-			}
-    }
+    InputStream inputStream = Resources.getResourceAsStream(resource);
+    XMLMapperBuilder mapperParser = new XMLMapperBuilder(inputStream, configuration, resource, configuration.getSqlFragments());
+    //解析XXXMapper.xml
+    mapperParser.parse();
   }
 }
 ```
@@ -131,10 +78,8 @@ private void mapperElement(XNode parent) throws Exception {
 
 ```java
 public void parse() {
-	if (!configuration.isResourceLoaded(resource)) {
-  	configurationElement(parser.evalNode("/mapper")); //4
-    bindMapperForNamespace(); //5
-  }
+  configurationElement(parser.evalNode("/mapper")); //4
+  bindMapperForNamespace(); //5
 }
 ```
 
@@ -166,7 +111,15 @@ private void buildStatementFromContext(List<XNode> list, String requiredDatabase
 ```java
 public void parseStatementNode() {
   String id = context.getStringAttribute("id");
-  LanguageDriver langDriver = getLanguageDriver(lang);
+  
+  String nodeName = context.getNode().getNodeName();
+  SqlCommandType sqlCommandType = SqlCommandType.valueOf(nodeName.toUpperCase(Locale.ENGLISH));
+  boolean isSelect = sqlCommandType == SqlCommandType.SELECT;
+  //flushCache=false
+  boolean flushCache = context.getBooleanAttribute("flushCache", !isSelect);
+	//useCache=true
+  boolean useCache = context.getBooleanAttribute("useCache", isSelect);
+  
   SqlSource sqlSource = langDriver.createSqlSource(configuration, context, parameterTypeClass);
 	builderAssistant.addMappedStatement(id, sqlSource, statementType, sqlCommandType,
         fetchSize, timeout, parameterMap, parameterTypeClass, resultMap, resultTypeClass,
