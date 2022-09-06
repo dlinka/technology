@@ -1,30 +1,4 @@
-### 关键类
-
-#### Configuration
-
-```java
-public class Configuration {
-  protected final Map<String, MappedStatement> mappedStatements = new StrictMap<MappedStatement>("Mapped Statements collection")
-    .conflictMessageProducer((savedValue, targetValue) ->
-        ". please check " + savedValue.getResource() + " and " + targetValue.getResource());
-	protected final MapperRegistry mapperRegistry = new MapperRegistry(this);
-}
-```
-
-#### MapperRegistry
-
-```java
-public class MapperRegistry {
-  private final Configuration config;
-	private final Map<Class<?>, MapperProxyFactory<?>> knownMappers = new HashMap<>();
-}
-```
-
----
-
-### 源码解析
-
-#### 1.SqlSessionFactoryBuilder#build方法
+## 1.SqlSessionFactoryBuilder#build
 
 ```java
 public SqlSessionFactory build(InputStream inputStream) {
@@ -32,21 +6,22 @@ public SqlSessionFactory build(InputStream inputStream) {
 }
 ↓
 ↓
-public SqlSessionFactory build(InputStream inputStream, String environment, Properties properties) {
+public SqlSessionFactory build(InputStream inputStream,
+                               String environment,
+                               Properties properties) {
 	XMLConfigBuilder parser = new XMLConfigBuilder(inputStream, environment, properties);
-  //解析Mybatis配置文件
+  //解析mybatis-config.xml
   Configuration configuration = parser.parse(); //2
   return build(configuration);
 }
 ↓
 ↓
 public SqlSessionFactory build(Configuration config) {
-	//SqlSessionFactory的实现类
   return new DefaultSqlSessionFactory(config);
 }
 ```
 
-#### 2.XMLConfigBuilder#parse
+## 2.XMLConfigBuilder#parse
 
 ```java
 public Configuration parse() {
@@ -56,25 +31,25 @@ public Configuration parse() {
 ↓
 ↓
 private void parseConfiguration(XNode root) {
-  //environments标签
-  environmentsElement(root.evalNode("environments"));
-  //mappers标签
   mapperElement(root.evalNode("mappers"));
 }
 ↓
 ↓
 private void mapperElement(XNode parent) throws Exception {
-  //<mapper resource="org/mybatis/example/BlogMapper.xml"/> 
-  for (XNode child : parent.getChildren()) {
+  //解析<mapper resource="org/mybatis/example/BlogMapper.xml"/> 
+  String resource = child.getStringAttribute("resource");
+  if(resource != null && url == null && mapperClass == null) {
     InputStream inputStream = Resources.getResourceAsStream(resource);
-    XMLMapperBuilder mapperParser = new XMLMapperBuilder(inputStream, configuration, resource, configuration.getSqlFragments());
-    //解析XXXMapper.xml
+    XMLMapperBuilder mapperParser = new XMLMapperBuilder(
+      inputStream, configuration, resource, configuration.getSqlFragments()
+    );
+    //解析BlogMapper.xml
     mapperParser.parse();
   }
 }
 ```
 
-#### 3.XMLMapperBuilder#parse
+## 3.XMLMapperBuilder#parse
 
 ```java
 public void parse() {
@@ -83,11 +58,13 @@ public void parse() {
 }
 ```
 
-#### 4.XMLMapperBuilder的configurationElement
+## 4.XMLMapperBuilder#configurationElement
 
 ```java
 private void configurationElement(XNode context) {
+	String namespace = context.getStringAttribute("namespace");
   builderAssistant.setCurrentNamespace(namespace);
+  cacheElement(context.evalNode("cache"));
   buildStatementFromContext(context.evalNodes("select|insert|update|delete"));
 }
 ↓
@@ -98,29 +75,19 @@ private void buildStatementFromContext(List<XNode> list) {
 ↓
 ↓
 private void buildStatementFromContext(List<XNode> list, String requiredDatabaseId) {
-	for (XNode context : list) {
-    final XMLStatementBuilder statementParser = new XMLStatementBuilder(configuration, builderAssistant, context, requiredDatabaseId);
-    //select|insert|update|delete标签
-    statementParser.parseStatementNode(); //4.1
-	}
+  final XMLStatementBuilder statementParser = new XMLStatementBuilder(
+    configuration, builderAssistant, context, requiredDatabaseId
+  );
+  statementParser.parseStatementNode(); //4.1
 }
 ```
 
-#### 4.1.XMLStatementBuilder#parseStatementNode方法
+## 4.1.XMLStatementBuilder#parseStatementNode
 
 ```java
 public void parseStatementNode() {
   String id = context.getStringAttribute("id");
   
-  String nodeName = context.getNode().getNodeName();
-  SqlCommandType sqlCommandType = SqlCommandType.valueOf(nodeName.toUpperCase(Locale.ENGLISH));
-  boolean isSelect = sqlCommandType == SqlCommandType.SELECT;
-  //flushCache=false
-  boolean flushCache = context.getBooleanAttribute("flushCache", !isSelect);
-	//useCache=true
-  boolean useCache = context.getBooleanAttribute("useCache", isSelect);
-  
-  SqlSource sqlSource = langDriver.createSqlSource(configuration, context, parameterTypeClass);
 	builderAssistant.addMappedStatement(id, sqlSource, statementType, sqlCommandType,
         fetchSize, timeout, parameterMap, parameterTypeClass, resultMap, resultTypeClass,
         resultSetTypeEnum, flushCache, useCache, resultOrdered,
@@ -128,30 +95,29 @@ public void parseStatementNode() {
 }
 ```
 
-#### 4.2MapperBuilderAssistant#addMappedStatement
+## 4.2.MapperBuilderAssistant#addMappedStatement
 
 ```java
-public MappedStatement addMappedStatement(
-    String id,
-    SqlSource sqlSource,
-    StatementType statementType,
-    SqlCommandType sqlCommandType,
-    Integer fetchSize,
-    Integer timeout,
-    String parameterMap,
-    Class<?> parameterType,
-    String resultMap,
-    Class<?> resultType,
-    ResultSetType resultSetType,
-    boolean flushCache,
-    boolean useCache,
-    boolean resultOrdered,
-    KeyGenerator keyGenerator,
-    String keyProperty,
-    String keyColumn,
-    String databaseId,
-    LanguageDriver lang,
-    String resultSets) {
+public MappedStatement addMappedStatement(String id,
+                                          SqlSource sqlSource,
+                                          StatementType statementType,
+                                          SqlCommandType sqlCommandType,
+                                          Integer fetchSize,
+                                          Integer timeout,
+                                          String parameterMap,
+                                          Class<?> parameterType,
+                                          String resultMap,
+                                          Class<?> resultType,
+                                          ResultSetType resultSetType,
+                                          boolean flushCache,
+                                          boolean useCache,
+                                          boolean resultOrdered,
+                                          KeyGenerator keyGenerator,
+                                          String keyProperty,
+                                          String keyColumn,
+                                          String databaseId,
+                                          LanguageDriver lang,
+                                          String resultSets) {
   //构建MappedStatement
   MappedStatement.Builder statementBuilder = new MappedStatement.Builder(configuration, id, sqlSource, sqlCommandType)
     .resource(resource)
@@ -170,29 +136,29 @@ public MappedStatement addMappedStatement(
     .flushCacheRequired(valueOrDefault(flushCache, !isSelect))
     .useCache(valueOrDefault(useCache, isSelect))
     .cache(currentCache);
+  
   MappedStatement statement = statementBuilder.build();
-	//MappedStatement对象添加到configuration对象的mappedStatements((Map<String, MappedStatement> mappedStatements))属性中
+	//将statement添加到configuration对象的mappedStatements属性中
 	configuration.addMappedStatement(statement);
   return statement;
 }
 ```
 
-#### 5.XMLMapperBuilder#bindMapperForNamespace
+## 5.XMLMapperBuilder#bindMapperForNamespace
 
 ```java
 private void bindMapperForNamespace() {
 	String namespace = builderAssistant.getCurrentNamespace();
-  if(namespace != null){
-    Class<?> boundType = null;
-  	boundType = Resources.classForName(namespace);
-  }
+  
+  Class<?> boundType = Resources.classForName(namespace);
+
 	if(boundType != null && !configuration.hasMapper(boundType)){
 		configuration.addMapper(boundType);
   }
 }
 ```
 
-#### 5.1.Configuration#addMapper
+## 5.1.Configuration#addMapper
 
 ```java
 public <T> void addMapper(Class<T> type) {
@@ -200,11 +166,13 @@ public <T> void addMapper(Class<T> type) {
 }
 ```
 
-#### 5.2MapperRegistry#addMapper
+## 5.2.MapperRegistry#addMapper
 
 ```java
-//knownMappers类型定义Map<Class<?>, MapperProxyFactory<?>>
-knownMappers.put(type, new MapperProxyFactory<T>(type));
+public <T> void addMapper(Class<T> type) {
+	//knownMappers类型定义Map<Class<?>, MapperProxyFactory<?>>
+  knownMappers.put(type, new MapperProxyFactory<T>(type));	
+}
 ```
 
 ---
