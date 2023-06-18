@@ -2,7 +2,7 @@
 
 ##### 传统IO
 
-![传统IO](/Users/dlinka/GitHub/technology/操作系统/传统IO.png)
+![传统IO](./传统IO.png)
 
 ```
 经历4次上下文切换
@@ -17,7 +17,7 @@ socket缓冲区DMA拷贝到协议引擎
 
 ##### mmap
 
-![mmap](/Users/dlinka/GitHub/technology/操作系统/mmap.png)
+![mmap](./mmap.png)
 
 ```
 经历4次上下文切换
@@ -33,7 +33,7 @@ socket缓冲区DMA拷贝到协议引擎
 
 ##### sendFile
 
-![sendFile](/Users/dlinka/GitHub/technology/操作系统/sendFile.png)
+![sendFile](./sendFile.png)
 
 ```
 只有2次上下文切换
